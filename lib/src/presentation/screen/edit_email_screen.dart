@@ -23,7 +23,7 @@ import '../../business_logic/auth/sign_in_provider.dart';
 import '../../business_logic/auth/signup_provider.dart';
 import '../../business_logic/recognize_photo_text.dart';
 import '../../business_logic/retrieve_user_data.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:e_payment/src/presentation/widget/form_text_field.dart';
 
 class EditEmailScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -195,58 +195,31 @@ class EditEmailScreen extends StatelessWidget {
     SignupProvider signupProvider = Provider.of<SignupProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Edit Email")),
+      appBar: AppBar(
+        title: Text("Edit Email"),
+        backgroundColor: Color.fromRGBO(0, 0, 254, 1),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: "New Email"),
+            FormTextField(
+              obscureText: false,
+              autofillHints: const [AutofillHints.email],
+              onEditingComplete: () => TextInput.finishAutofillContext(),
+              fieldTitle: "Your New E-Mail:",
+              fieldHintText: "Example@gmail.com",
+              onChanged: (email) {
+                emailController.text = email;
+              },
             ),
-            // Container(
-            //   padding: const EdgeInsets.all(16.0),
-            //   decoration: BoxDecoration(
-            //     color: Colors.grey[200],
-            //     borderRadius: BorderRadius.circular(8.0),
-            //   ),
-            //   child: Text(
-            //     "vvv ${auth.currentUser!.email}",
-            //     style: const TextStyle(
-            //       fontFamily: "Poppins",
-            //       fontWeight: FontWeight.bold,
-            //       fontSize: 14,
-            //       color: Colors.black,
-            //     ),
-            //   ),
-            // ),
+        
             SizedBox(height: 16.0),
-            ElevatedButton(
+            ConfirmActionButton(
               onPressed: () async {
-                // HapticFeedback.vibrate();
-                // SignOut().signOut();
-                // // Navigator.push(
-                // //   context,
-                // //   MaterialPageRoute(builder: (context) => SignInScreen()),
-                // // );
-                // NavigateToScreen().navToScreen(context,  UpdateEmailScreen());
-                // oneSessionLogin.notLoggedIn();
-                // oneSessionLogin.sendSessionData(auth.currentUser!.email);
-                // if (signInProvider.userEmail != "") {
-                //   oneSessionLogin.notLoggedIn();
-                //   await oneSessionLogin
-                //       .sendSessionData(signInProvider.userEmail);
-                // } else {
-                //   oneSessionLogin.notLoggedIn();
-                //   await oneSessionLogin
-                //       .sendSessionData(signupProvider.userEmail);
-                // }
                 String newEmail = emailController.text.trim();
                 if (newEmail.isNotEmpty) {
                   try {
-                    //final User? currentUser = auth.currentUser;
-                    //  if (currentUser != null && currentUser.emailVerified) {
-                    // Send verification email to the new email address
                     await auth.currentUser!.updateEmail(newEmail);
                     await auth.currentUser!.sendEmailVerification();
 
@@ -257,42 +230,6 @@ class EditEmailScreen extends StatelessWidget {
                     );
                     NavigateToScreen()
                         .navToScreen(context, const SignInScreen());
-                    // HapticFeedback.vibrate();
-                    // SignOut().signOut();
-                    // // Navigator.push(
-                    // //   context,
-                    // //   MaterialPageRoute(builder: (context) => SignInScreen()),
-                    // // );
-                    // NavigateToScreen()
-                    //      .navToScreen(context, const SignInScreen());
-                    // oneSessionLogin.notLoggedIn();
-                    // oneSessionLogin.sendSessionData(auth.currentUser!.email);
-                    // if (signInProvider.userEmail != "") {
-                    //   oneSessionLogin.notLoggedIn();
-                    //   await oneSessionLogin
-                    //       .sendSessionData(signInProvider.userEmail);
-                    // } else {
-                    //   oneSessionLogin.notLoggedIn();
-                    //   await oneSessionLogin
-                    //       .sendSessionData(signupProvider.userEmail);
-                    // }
-                    // } else {
-                    //   // await auth.currentUser!.sendEmailVerification();
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(
-                    //         content: Text("Email not Verified. Please verify your email.")),
-                    //   );
-                    // }
-                    // Show a success message or navigate back
-
-                    // Wait for the user to verify the new email address
-                    // await auth.currentUser!.reload();
-
-                    // Navigate back or show a success message
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(content: Text("Email updated successfully.")),
-                    // );
-                    //   Navigator.pop(context); // Navigate back
                   } catch (e) {
                     // Show an error message
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -301,10 +238,98 @@ class EditEmailScreen extends StatelessWidget {
                     print(e.toString());
                   }
                 }
-                //updateEmail(context);
               },
-              child: Text("Edit Email"),
+              buttonText: const Text(
+                'Update Email',
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                ),
+              ),
             ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     // HapticFeedback.vibrate();
+            //     // SignOut().signOut();
+            //     // // Navigator.push(
+            //     // //   context,
+            //     // //   MaterialPageRoute(builder: (context) => SignInScreen()),
+            //     // // );
+            //     // NavigateToScreen().navToScreen(context,  UpdateEmailScreen());
+            //     // oneSessionLogin.notLoggedIn();
+            //     // oneSessionLogin.sendSessionData(auth.currentUser!.email);
+            //     // if (signInProvider.userEmail != "") {
+            //     //   oneSessionLogin.notLoggedIn();
+            //     //   await oneSessionLogin
+            //     //       .sendSessionData(signInProvider.userEmail);
+            //     // } else {
+            //     //   oneSessionLogin.notLoggedIn();
+            //     //   await oneSessionLogin
+            //     //       .sendSessionData(signupProvider.userEmail);
+            //     // }
+            //     String newEmail = emailController.text.trim();
+            //     if (newEmail.isNotEmpty) {
+            //       try {
+            //         //final User? currentUser = auth.currentUser;
+            //         //  if (currentUser != null && currentUser.emailVerified) {
+            //         // Send verification email to the new email address
+            //         await auth.currentUser!.updateEmail(newEmail);
+            //         await auth.currentUser!.sendEmailVerification();
+
+            //         ScaffoldMessenger.of(context).showSnackBar(
+            //           SnackBar(
+            //               content: Text(
+            //                   "Email Updated. Please check your email to verify")),
+            //         );
+            //         NavigateToScreen()
+            //             .navToScreen(context, const SignInScreen());
+            //         // HapticFeedback.vibrate();
+            //         // SignOut().signOut();
+            //         // // Navigator.push(
+            //         // //   context,
+            //         // //   MaterialPageRoute(builder: (context) => SignInScreen()),
+            //         // // );
+            //         // NavigateToScreen()
+            //         //      .navToScreen(context, const SignInScreen());
+            //         // oneSessionLogin.notLoggedIn();
+            //         // oneSessionLogin.sendSessionData(auth.currentUser!.email);
+            //         // if (signInProvider.userEmail != "") {
+            //         //   oneSessionLogin.notLoggedIn();
+            //         //   await oneSessionLogin
+            //         //       .sendSessionData(signInProvider.userEmail);
+            //         // } else {
+            //         //   oneSessionLogin.notLoggedIn();
+            //         //   await oneSessionLogin
+            //         //       .sendSessionData(signupProvider.userEmail);
+            //         // }
+            //         // } else {
+            //         //   // await auth.currentUser!.sendEmailVerification();
+            //         //   ScaffoldMessenger.of(context).showSnackBar(
+            //         //     SnackBar(
+            //         //         content: Text("Email not Verified. Please verify your email.")),
+            //         //   );
+            //         // }
+            //         // Show a success message or navigate back
+
+            //         // Wait for the user to verify the new email address
+            //         // await auth.currentUser!.reload();
+
+            //         // Navigate back or show a success message
+            //         // ScaffoldMessenger.of(context).showSnackBar(
+            //         //   SnackBar(content: Text("Email updated successfully.")),
+            //         // );
+            //         //   Navigator.pop(context); // Navigate back
+            //       } catch (e) {
+            //         // Show an error message
+            //         ScaffoldMessenger.of(context).showSnackBar(
+            //           SnackBar(content: Text("Error $e")),
+            //         );
+            //         print(e.toString());
+            //       }
+            //     }
+            //     //updateEmail(context);
+            //   },
+            //   child: Text("Update Email"),
+            // ),
             SizedBox(height: 16.0),
             // ElevatedButton(
             //   onPressed: () => updateEmail(context),
@@ -339,3 +364,24 @@ class EditEmailScreen extends StatelessWidget {
     //           controller: emailController,
     //           decoration: InputDecoration(labelText: "New Email"),
     //         ),
+
+        // TextField(
+            //   controller: emailController,
+            //   decoration: InputDecoration(labelText: "Enter New Email"),
+            // ),
+            // Container(
+            //   padding: const EdgeInsets.all(16.0),
+            //   decoration: BoxDecoration(
+            //     color: Colors.grey[200],
+            //     borderRadius: BorderRadius.circular(8.0),
+            //   ),
+            //   child: Text(
+            //     "vvv ${auth.currentUser!.email}",
+            //     style: const TextStyle(
+            //       fontFamily: "Poppins",
+            //       fontWeight: FontWeight.bold,
+            //       fontSize: 14,
+            //       color: Colors.black,
+            //     ),
+            //   ),
+            // ),
