@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:e_payment/src/business_logic/auth/code_handling.dart';
@@ -14,12 +13,12 @@ import '../../business_logic/auth/one_session_login.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     SignupProvider signupProvider = Provider.of<SignupProvider>(context);
     CodeHandling codeHandling = Provider.of<CodeHandling>(context);
     OneSessionLogin oneSessionLogin = Provider.of<OneSessionLogin>(context);
+    bool isCode = false;
 
     // MediaQueryData queryData;
     // queryData = MediaQuery.of(context);
@@ -107,10 +106,16 @@ class SignupScreen extends StatelessWidget {
                               fieldHintText: "Code",
                               obscureText: false,
                               onChanged: (code) async {
-                                await codeHandling.getLifeTimeCodeFromFirebase();
+                                isCode = true;
+                                await codeHandling
+                                    .getLifeTimeCodeFromFirebase();
                                 await codeHandling.getOneYearCodeFromFirebase();
                                 await codeHandling.getOneWeekCodeFromFirebase();
-                                await codeHandling.getOneMonthCodeFromFirebase();
+                                await codeHandling
+                                    .getOneMonthCodeFromFirebase();
+                                await codeHandling
+                                    .getFreeLicenseCodeFromFirebase();
+
                                 signupProvider.getSubscriptionCode(code);
                               },
                               errorText: signupProvider.userSubscriptionStatus,
@@ -133,32 +138,30 @@ class SignupScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             !signupProvider.isLoading
-                                ?
-                            ConfirmActionButton(
-                              onPressed: () async {
-                                HapticFeedback.vibrate();
+                                ? ConfirmActionButton(
+                                    onPressed: () async {
+                                      HapticFeedback.vibrate();
 
-                                await signupProvider.signupPressed(
-                                    context, codeHandling.deleteCode(),
-                                    oneSessionLogin.loggedIn(),
-                                    oneSessionLogin.sendSessionData(
-                                        signupProvider.userEmail),);
-
-
-
-                              },
-                              buttonText: const Text(
-                                'Sign up',
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            )
+                                      await signupProvider.signupPressed(
+                                        context,
+                                        codeHandling.deleteCode(),
+                                        oneSessionLogin.loggedIn(),
+                                        oneSessionLogin.sendSessionData(
+                                            signupProvider.userEmail),
+                                      );
+                                    },
+                                    buttonText: const Text(
+                                      'Sign up',
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                      ),
+                                    ),
+                                  )
                                 : const Center(
-                              child: CircularProgressIndicator(
-                                color: Color.fromRGBO(0, 0, 254, 1),
-                              ),
-                            ),
+                                    child: CircularProgressIndicator(
+                                      color: Color.fromRGBO(0, 0, 254, 1),
+                                    ),
+                                  ),
                             const SizedBox(
                               height: 10,
                             ),

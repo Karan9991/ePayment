@@ -94,6 +94,8 @@ class SignupProvider extends ChangeNotifier {
       userSubscriptionStatus = "one month access";
     } else if (weekCodeList.contains(subscriptionCode)) {
       userSubscriptionStatus = "one week access";
+    } else if (weekCodeList.contains(subscriptionCode)) {
+      userSubscriptionStatus = "free code access";
     } else {
       userSubscriptionStatus = "wrong code";
     }
@@ -103,10 +105,12 @@ class SignupProvider extends ChangeNotifier {
   getSubscriptionCode(String code) {
     if (code != "") {
       _subscriptionCode = code;
+      print("getSubscriptionCode if usersub $_subscriptionCode");
 
       _getSubscriptionCodeStatus(_subscriptionCode);
     } else {
-      userSubscriptionStatus = "Code field is empty ! ";
+      userSubscriptionStatus = "empty";
+      print("getSubscriptionCode else usersub $userSubscriptionStatus");
     }
     notifyListeners();
   }
@@ -132,7 +136,8 @@ class SignupProvider extends ChangeNotifier {
         _userPassword != "" &&
         isPasswordMatch == true &&
         userSubscriptionStatus != "wrong code" &&
-        userSubscriptionStatus != "Code field is empty ! ") {
+        userSubscriptionStatus != "empty") {
+      print("allFieldsFilled ifusersub $userSubscriptionStatus");
       _isAllFieldsFilled = true;
     } else {
       _isAllFieldsFilled = false;

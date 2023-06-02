@@ -98,15 +98,43 @@ class SignInScreen extends StatelessWidget {
 
                                         final User? currentUser =
                                             auth.currentUser;
-                                        final bb = currentUser!.email;
-                                        await currentUser!
-                                            .reload(); // Refresh user's data
-                                        // oneSessionLogin.notLoggedIn();
 
-                                        // oneSessionLogin.sendSessionData(
-                                        //     auth.currentUser!.email);
+                                        if (currentUser != null) {
+                                          final bb = currentUser!.email;
+                                          await currentUser!
+                                              .reload(); // Refresh user's data
+                                          // oneSessionLogin.notLoggedIn();
 
-                                        if (currentUser!.emailVerified) {
+                                          // oneSessionLogin.sendSessionData(
+                                          //     auth.currentUser!.email);
+
+                                          if (currentUser.emailVerified) {
+                                            HapticFeedback.vibrate();
+
+                                            await oneSessionLogin
+                                                .getSessionData(
+                                                    signInProvider.userEmail);
+                                            if (!context.mounted) return;
+                                            await signInProvider.signInPressed(
+                                              context,
+                                              oneSessionLogin.isLoggedIn,
+                                            );
+                                            if (signInProvider.loggedIn ==
+                                                true) {
+                                              oneSessionLogin.loggedIn();
+                                              await oneSessionLogin
+                                                  .sendSessionData(
+                                                      signInProvider.userEmail);
+                                            }
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      "Email not verified. Please check your email to verify. $bb")),
+                                            );
+                                          }
+                                        } else {
                                           HapticFeedback.vibrate();
 
                                           await oneSessionLogin.getSessionData(
@@ -122,13 +150,6 @@ class SignInScreen extends StatelessWidget {
                                                 .sendSessionData(
                                                     signInProvider.userEmail);
                                           }
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                                content: Text(
-                                                    "Email not verified. Please check your email to verify. $bb")),
-                                          );
                                         }
                                       } catch (e) {
                                         ScaffoldMessenger.of(context)

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_payment/src/data/free_code_list.dart';
 import 'package:e_payment/src/data/one_week_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:e_payment/src/data/lifetime_code_list.dart';
@@ -13,6 +14,7 @@ class CodeHandling extends ChangeNotifier {
   String retrievedOneYearCode = "";
   String retrievedMonthCode = "";
   String retrievedWeekCode = "";
+  String retrievedFreeCode = "";
 
   getCode(enteredCode) {
     code = enteredCode;
@@ -26,6 +28,7 @@ class CodeHandling extends ChangeNotifier {
     };
     await codes.doc("LifeTimeAccess").set(codeValue);
   }
+
   addWeekCodeToFirebase() async {
     final codes = _db.collection("codes");
     final codeValue = <String, dynamic>{
@@ -49,8 +52,8 @@ class CodeHandling extends ChangeNotifier {
     };
     await codes.doc("OneMonthAccess").set(codeValue);
   }
-  
-    addFreeLicenseCodeToFirebase() async {
+
+  addFreeLicenseCodeToFirebase() async {
     final codes = _db.collection("codes");
     final codeValue = <String, dynamic>{
       "code": code,
@@ -62,18 +65,19 @@ class CodeHandling extends ChangeNotifier {
     final docRef = _db.collection("codes").doc("LifeTimeAccess");
     await docRef.get().then(
       (DocumentSnapshot doc) async {
-        var data =  doc.data() as Map<String, dynamic>;
+        var data = doc.data() as Map<String, dynamic>;
         retrievedLifeTimeCode = data["code"];
         lifeTimeCodeList.add(retrievedLifeTimeCode);
         notifyListeners();
       },
     );
   }
+
   getOneWeekCodeFromFirebase() async {
     final docRef = _db.collection("codes").doc("OneWeekAccess");
     await docRef.get().then(
       (DocumentSnapshot doc) async {
-        var data =  doc.data() as Map<String, dynamic>;
+        var data = doc.data() as Map<String, dynamic>;
         retrievedWeekCode = data["code"];
         weekCodeList.add(retrievedWeekCode);
         notifyListeners();
@@ -81,12 +85,11 @@ class CodeHandling extends ChangeNotifier {
     );
   }
 
-
   getOneYearCodeFromFirebase() async {
     final docRef = _db.collection("codes").doc("OneYearAccess");
     await docRef.get().then(
       (DocumentSnapshot doc) async {
-        var data =  doc.data() as Map<String, dynamic>;
+        var data = doc.data() as Map<String, dynamic>;
         retrievedOneYearCode = data["code"];
         oneYearCodeList.add(retrievedOneYearCode);
         notifyListeners();
@@ -98,9 +101,21 @@ class CodeHandling extends ChangeNotifier {
     final docRef = _db.collection("codes").doc("OneMonthAccess");
     await docRef.get().then(
       (DocumentSnapshot doc) async {
-        var data =  doc.data() as Map<String, dynamic>;
+        var data = doc.data() as Map<String, dynamic>;
         retrievedMonthCode = data["code"];
         oneMonthCodeList.add(retrievedMonthCode);
+        notifyListeners();
+      },
+    );
+  }
+
+  getFreeLicenseCodeFromFirebase() async {
+    final docRef = _db.collection("codes").doc("FreeLicenseAccess");
+    await docRef.get().then(
+      (DocumentSnapshot doc) async {
+        var data = doc.data() as Map<String, dynamic>;
+        retrievedFreeCode = data["code"];
+        freeCodeList.add(retrievedFreeCode);
         notifyListeners();
       },
     );
@@ -112,6 +127,8 @@ class CodeHandling extends ChangeNotifier {
     await addLifeTimeCodeToFirebase();
     await addOneMonthCodeToFirebase();
     await addWeekCodeToFirebase();
+    await addFreeLicenseCodeToFirebase();
+
     notifyListeners();
   }
 }
