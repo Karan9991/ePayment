@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ntp/ntp.dart';
@@ -7,7 +8,6 @@ import 'package:e_payment/src/data/one_year_code_list.dart';
 import 'package:e_payment/src/data/one_month_code.dart';
 
 import '../../data/one_week_code.dart';
-
 
 class SignupProvider extends ChangeNotifier {
   String userName = "";
@@ -30,21 +30,24 @@ class SignupProvider extends ChangeNotifier {
       DateTime dateNow = await NTP.now();
       subscriptionDate = dateNow;
       if (userSubscriptionStatus != "life time access" &&
-          userSubscriptionStatus != "one month access"&& userSubscriptionStatus != "one week access") {
+          userSubscriptionStatus != "one month access" &&
+          userSubscriptionStatus != "one week access") {
         subscriptionEndDate = DateTime(subscriptionDate!.year + 1,
             subscriptionDate!.month, subscriptionDate!.day);
       } else if (userSubscriptionStatus != "life time access" &&
-          userSubscriptionStatus != "one year access" && userSubscriptionStatus != "one week access" &&
+          userSubscriptionStatus != "one year access" &&
+          userSubscriptionStatus != "one week access" &&
           userSubscriptionStatus == "one month access") {
         subscriptionEndDate = DateTime(subscriptionDate!.year,
             subscriptionDate!.month + 1, subscriptionDate!.day);
-      }if (userSubscriptionStatus != "life time access" &&
-          userSubscriptionStatus != "one year access" && userSubscriptionStatus == "one week access" &&
+      }
+      if (userSubscriptionStatus != "life time access" &&
+          userSubscriptionStatus != "one year access" &&
+          userSubscriptionStatus == "one week access" &&
           userSubscriptionStatus != "one month access") {
         subscriptionEndDate = DateTime(subscriptionDate!.year,
-            subscriptionDate!.month , subscriptionDate!.day+7);
-      }
-      else {
+            subscriptionDate!.month, subscriptionDate!.day + 7);
+      } else {
         subscriptionEndDate = DateTime(subscriptionDate!.year + 100,
             subscriptionDate!.month, subscriptionDate!.day);
       }
@@ -89,10 +92,9 @@ class SignupProvider extends ChangeNotifier {
       userSubscriptionStatus = "one year access";
     } else if (oneMonthCodeList.contains(subscriptionCode)) {
       userSubscriptionStatus = "one month access";
-    }  else if (weekCodeList.contains(subscriptionCode)) {
+    } else if (weekCodeList.contains(subscriptionCode)) {
       userSubscriptionStatus = "one week access";
-    }
-    else {
+    } else {
       userSubscriptionStatus = "wrong code";
     }
     notifyListeners();
@@ -146,7 +148,6 @@ class SignupProvider extends ChangeNotifier {
       try {
         await _auth.createUserWithEmailAndPassword(
             email: userEmail, password: _userPassword);
-
       } on FirebaseAuthException catch (e) {
         _signupError = e.message!;
       }
@@ -166,11 +167,11 @@ class SignupProvider extends ChangeNotifier {
     _auth.currentUser?.delete();
   }
 
-  signupPressed(context, deleteCode,loggedIn,sendSessionData) async {
+  signupPressed(context, deleteCode, loggedIn, sendSessionData) async {
     await _signup();
 
     if (_signupError == '' && _isAllFieldsFilled == true) {
-      Navigator.pushNamed(context, '/phoneAuth');
+      //Navigator.pushNamed(context, '/phoneAuth');
 
       await deleteCode;
       loggedIn;
@@ -185,14 +186,27 @@ class SignupProvider extends ChangeNotifier {
               subscriptionEndDate: subscriptionEndDate)
           .createUserDataToFirestore();
 
-
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Account has been successfully created",
+        style: const TextStyle(
+          color: Colors.white,
+          fontFamily: "Poppins",
+        ),
+      )));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-
           content: Text(
-            _signupError,
-            style: const TextStyle(color: Colors.white,fontFamily: "Poppins",),
-          )));
+        _signupError,
+        style: const TextStyle(
+          color: Colors.white,
+          fontFamily: "Poppins",
+        ),
+      )));
     }
 
     notifyListeners();

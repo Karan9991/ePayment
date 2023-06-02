@@ -117,50 +117,87 @@ class HomeScreen extends StatelessWidget {
                         ]),
                   ),
                 ), //help or support
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => EditEmailScreen()),
+                //       );
 
-                
+                //     },
+                //     child: const Row(
+                //         crossAxisAlignment: CrossAxisAlignment.end,
+                //         children: [
+                //           Padding(
+                //             padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                //             child: Icon(
+                //               Icons.email,
+                //               size: 20,
+                //               color: Colors.white,
+                //             ),
+                //           ),
+                //           Padding(
+                //             padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                //              child: Text(
+                //                 "${auth.currentUser!.email}",
+                //                 style: const TextStyle(
+                //                   fontFamily: "Poppins",
+                //                   fontWeight: FontWeight.bold,
+                //                   fontSize: 14,
+                //                   color: Colors.white,
+                //                 ),
+                //               ),
+                //           ),
+                //         ]),
+                //   ),
+                // ),
                 GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditEmailScreen()),
-    );
-  },
-  child: Padding(
-    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-          child: Icon(
-            Icons.email,
-            size: 20,
-            color: Colors.white,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-          child: SizedBox(
-            width: 200,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                "${auth.currentUser!.email}",
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.white,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditEmailScreen()),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                          child: Icon(
+                            Icons.email,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          // Add Expanded widget
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                            // child: FittedBox(
+                            //   fit: BoxFit.scaleDown,
+                            child: Text(
+                              "${auth.currentUser!.email}",
+                              style: const TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                            //),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-),
 
                 // Padding(
                 //   padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
@@ -206,7 +243,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(1.0, 40, 0.8, 0.8),
+                          padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
                           child: retrieveUserDataProvider.subscriptionEndDate
                                   .isAfter(DateTime(2100 - 01 - 1))
                               ? const Text("End date:   Life time ",
@@ -596,7 +633,8 @@ class HomeScreen extends StatelessWidget {
                                 if (codeHandling.code != "" &&
                                     codeHandling.code != '' &&
                                     codeHandling.code != null) {
-                                  await codeHandling.addFreeLicenseCodeToFirebase();
+                                  await codeHandling
+                                      .addFreeLicenseCodeToFirebase();
 
                                   if (!context.mounted) {
                                     return;
