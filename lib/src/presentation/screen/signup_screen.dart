@@ -18,7 +18,6 @@ class SignupScreen extends StatelessWidget {
     SignupProvider signupProvider = Provider.of<SignupProvider>(context);
     CodeHandling codeHandling = Provider.of<CodeHandling>(context);
     OneSessionLogin oneSessionLogin = Provider.of<OneSessionLogin>(context);
-    bool isCode = false;
 
     // MediaQueryData queryData;
     // queryData = MediaQuery.of(context);
@@ -106,7 +105,6 @@ class SignupScreen extends StatelessWidget {
                               fieldHintText: "Code",
                               obscureText: false,
                               onChanged: (code) async {
-                                isCode = true;
                                 await codeHandling
                                     .getLifeTimeCodeFromFirebase();
                                 await codeHandling.getOneYearCodeFromFirebase();

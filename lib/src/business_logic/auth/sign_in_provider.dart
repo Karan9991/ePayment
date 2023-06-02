@@ -61,7 +61,7 @@ class SignInProvider with ChangeNotifier {
   }
 
   signInPressed(context, bool isLoggedIn) async {
-    if (isLoggedIn == false) {
+    if (isLoggedIn == true) {
       _signInError = 'User already logged-in on another device';
       notifyListeners();
     } else {

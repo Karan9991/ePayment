@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/ad.dart';
 import 'package:e_payment/src/presentation/screen/edit_email_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -117,43 +118,7 @@ class HomeScreen extends StatelessWidget {
                         ]),
                   ),
                 ), //help or support
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => EditEmailScreen()),
-                //       );
 
-                //     },
-                //     child: const Row(
-                //         crossAxisAlignment: CrossAxisAlignment.end,
-                //         children: [
-                //           Padding(
-                //             padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                //             child: Icon(
-                //               Icons.email,
-                //               size: 20,
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //           Padding(
-                //             padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                //              child: Text(
-                //                 "${auth.currentUser!.email}",
-                //                 style: const TextStyle(
-                //                   fontFamily: "Poppins",
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 14,
-                //                   color: Colors.white,
-                //                 ),
-                //               ),
-                //           ),
-                //         ]),
-                //   ),
-                // ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -199,36 +164,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                //   child: Row(
-                //       crossAxisAlignment: CrossAxisAlignment.end,
-                //       children: [
-                //         const Padding(
-                //           padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                //           child: Icon(
-                //             Icons.email,
-                //             size: 20,
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //         Padding(
-                //           padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                //           child: SizedBox(
-                //             width: 200,
-                //             child: FittedBox(
-                //                 fit: BoxFit.scaleDown,
-                //                 child: Text("${auth.currentUser!.email}",
-                //                     style: const TextStyle(
-                //                       fontFamily: "Poppins",
-                //                       fontWeight: FontWeight.bold,
-                //                       fontSize: 14,
-                //                       color: Colors.white,
-                //                     ))),
-                //           ),
-                //         ),
-                //       ]),
-                // ), //userEmail
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 1, 0, 10),
                   child: Row(
@@ -307,6 +242,42 @@ class HomeScreen extends StatelessWidget {
                         ]),
                   ),
                 ), //sign out
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle the "Don't want any ads? Upgrade" action here
+                      HapticFeedback.vibrate();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyAd()),
+                      );
+                      // RequestCode().launchInBrowser(
+                      //     Uri.parse("http://m.me/enegosyoofficial"));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.verified_user_rounded,
+                            size: 20,
+                            color: Colors.blue,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            "Don't want ads? Upgrade",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -319,7 +290,7 @@ class HomeScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: ChangeNotifierProvider(
               create: (_) => PhotoProvider(),
-              child: auth.currentUser?.email == "karan74406@gmail.com"
+              child: auth.currentUser?.email == "admin@admin.com"
                   ? Padding(
                       padding: const EdgeInsets.only(top: 200),
                       child: Column(

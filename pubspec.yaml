@@ -59,6 +59,7 @@ dependencies:
   syncfusion_flutter_pdf: ^21.1.41
   flutter_email_sender: ^5.2.0
   flutter_native_splash: ^2.2.19
+  google_mobile_ads: ^0.13.4
 
 
 dev_dependencies:
