@@ -9,6 +9,7 @@ import 'package:e_payment/src/presentation/widget/forgot_button.dart';
 import 'package:e_payment/src/presentation/widget/form_text_field.dart';
 import 'package:e_payment/src/presentation/widget/navigate_to_signup_button.dart';
 import 'package:e_payment/src/presentation/widget/confirm_action_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../business_logic/auth/one_session_login.dart';
 
@@ -65,7 +66,6 @@ class SignInScreen extends StatelessWidget {
                                 fieldTitle: "Your e-mail:",
                                 fieldHintText: "Example@gmail.com",
                                 onChanged: (email) {
-                                  
                                   signInProvider.getEmail(email);
                                 },
                               ),
@@ -93,18 +93,49 @@ class SignInScreen extends StatelessWidget {
                             !signInProvider.isLoading
                                 ? ConfirmActionButton(
                                     onPressed: () async {
-                                      HapticFeedback.vibrate();
+                                      try {
+                                        final auth = FirebaseAuth.instance;
 
-                                      await oneSessionLogin.getSessionData(
-                                          signInProvider.userEmail);
-                                      if (!context.mounted) return;
-                                      await signInProvider.signInPressed(
-                                        context,
-                                        oneSessionLogin.isLoggedIn,
-                                      );
-                                      if(signInProvider.loggedIn==true){
-                                        oneSessionLogin.loggedIn();
-                                        await oneSessionLogin.sendSessionData(signInProvider.userEmail);
+                                        final User? currentUser =
+                                            auth.currentUser;
+                                        final bb = currentUser!.email;
+                                        await currentUser!
+                                            .reload(); // Refresh user's data
+                                        // oneSessionLogin.notLoggedIn();
+
+                                        // oneSessionLogin.sendSessionData(
+                                        //     auth.currentUser!.email);
+
+                                        if (currentUser!.emailVerified) {
+                                          HapticFeedback.vibrate();
+
+                                          await oneSessionLogin.getSessionData(
+                                              signInProvider.userEmail);
+                                          if (!context.mounted) return;
+                                          await signInProvider.signInPressed(
+                                            context,
+                                            oneSessionLogin.isLoggedIn,
+                                          );
+                                          if (signInProvider.loggedIn == true) {
+                                            oneSessionLogin.loggedIn();
+                                            await oneSessionLogin
+                                                .sendSessionData(
+                                                    signInProvider.userEmail);
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    "Email not verified. Please check your email to verify. $bb")),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(content: Text("Error $e")),
+                                        );
+                                        print(e.toString());
                                       }
                                     },
                                     buttonText: const Text(

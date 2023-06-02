@@ -213,7 +213,7 @@ class EditEmailScreen extends StatelessWidget {
                 emailController.text = email;
               },
             ),
-        
+
             SizedBox(height: 16.0),
             ConfirmActionButton(
               onPressed: () async {
@@ -222,7 +222,8 @@ class EditEmailScreen extends StatelessWidget {
                   try {
                     await auth.currentUser!.updateEmail(newEmail);
                     await auth.currentUser!.sendEmailVerification();
-
+                    oneSessionLogin.notLoggedIn();
+                    oneSessionLogin.sendSessionData(auth.currentUser!.email);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
