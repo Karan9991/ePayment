@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/edit_email_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,36 +117,81 @@ class HomeScreen extends StatelessWidget {
                         ]),
                   ),
                 ), //help or support
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                          child: Icon(
-                            Icons.email,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                          child: SizedBox(
-                            width: 200,
-                            child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text("${auth.currentUser!.email}",
-                                    style: const TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ))),
-                          ),
-                        ),
-                      ]),
-                ), //userEmail
+
+                
+                GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditEmailScreen()),
+    );
+  },
+  child: Padding(
+    padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+          child: Icon(
+            Icons.email,
+            size: 20,
+            color: Colors.white,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+          child: SizedBox(
+            width: 200,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                "${auth.currentUser!.email}",
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                //   child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.end,
+                //       children: [
+                //         const Padding(
+                //           padding: EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                //           child: Icon(
+                //             Icons.email,
+                //             size: 20,
+                //             color: Colors.white,
+                //           ),
+                //         ),
+                //         Padding(
+                //           padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                //           child: SizedBox(
+                //             width: 200,
+                //             child: FittedBox(
+                //                 fit: BoxFit.scaleDown,
+                //                 child: Text("${auth.currentUser!.email}",
+                //                     style: const TextStyle(
+                //                       fontFamily: "Poppins",
+                //                       fontWeight: FontWeight.bold,
+                //                       fontSize: 14,
+                //                       color: Colors.white,
+                //                     ))),
+                //           ),
+                //         ),
+                //       ]),
+                // ), //userEmail
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 1, 0, 10),
                   child: Row(

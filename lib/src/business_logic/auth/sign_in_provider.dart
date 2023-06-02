@@ -9,9 +9,8 @@ class SignInProvider with ChangeNotifier {
   String _signInError = '';
   bool _isAllFieldsFilled = false;
   bool isLoading = false;
-  bool loggedIn=false;
+  bool loggedIn = false;
   final _auth = FirebaseAuth.instance;
-
 
   getEmail(String email) {
     if (email != "") {
@@ -44,12 +43,11 @@ class SignInProvider with ChangeNotifier {
       try {
         await _auth.signInWithEmailAndPassword(
             email: userEmail, password: _userPassword);
-        loggedIn=true;
-notifyListeners();
-
+        loggedIn = true;
+        notifyListeners();
       } on FirebaseAuthException catch (e) {
         _signInError = e.message!;
-        loggedIn=false;
+        loggedIn = false;
         notifyListeners();
       }
     } else {
@@ -62,28 +60,26 @@ notifyListeners();
     notifyListeners();
   }
 
-  signInPressed(context,bool isLoggedIn) async {
-
-    if(isLoggedIn==true){
-      _signInError='User already logged-in on another device';
+  signInPressed(context, bool isLoggedIn) async {
+    if (isLoggedIn == true) {
+      _signInError = 'User already logged-in on another device';
       notifyListeners();
-    }else{
+    } else {
       await signIn();
-
     }
-
 
     if (!context.mounted) return;
     if (_signInError == '' && _isAllFieldsFilled == true) {
       NavigateToScreen().navToScreen(context, const HomeScreen());
     } else {
-
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-
           content: Text(
-            _signInError,
-            style: const TextStyle(color: Colors.white,fontFamily: "Poppins",),
-          )));
+        _signInError,
+        style: const TextStyle(
+          color: Colors.white,
+          fontFamily: "Poppins",
+        ),
+      )));
     }
   }
 }
