@@ -456,54 +456,56 @@ class ReceiptsList extends StatelessWidget {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    downloadPdfLoadingState.isLoading ||
-                            isSubscriptionFree == true
-                        ? Container()
-                        : FloatingBtn(
-                            onTap: () async {
-                              HapticFeedback.vibrate();
-                              downloadPdfLoadingState.loading();
-                              await downloadAndEmail.makeReceiptsPdf(
-                                  historyPageSearch.isStreamList
-                                      ? receipts
-                                      : historyPageSearch.searchedReceiptsList,
-                                  context);
-                              downloadPdfLoadingState.notLoading();
-                            },
-                            icon: const Icon(
-                              Icons.download,
-                              color: Color.fromRGBO(0, 0, 254, 1),
+            if (!isSubscriptionFree)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      downloadPdfLoadingState.isLoading
+                          ? Container()
+                          : FloatingBtn(
+                              onTap: () async {
+                                HapticFeedback.vibrate();
+                                downloadPdfLoadingState.loading();
+                                await downloadAndEmail.makeReceiptsPdf(
+                                    historyPageSearch.isStreamList
+                                        ? receipts
+                                        : historyPageSearch
+                                            .searchedReceiptsList,
+                                    context);
+                                downloadPdfLoadingState.notLoading();
+                              },
+                              icon: const Icon(
+                                Icons.download,
+                                color: Color.fromRGBO(0, 0, 254, 1),
+                              ),
                             ),
-                          ),
-                    sendEmailLoadingState.isLoading
-                        ? Container()
-                        : FloatingBtn(
-                            onTap: () async {
-                              HapticFeedback.vibrate();
-                              sendEmailLoadingState.loading();
-                              await downloadAndEmail.sendPdfToEmail(
-                                  context,
-                                  historyPageSearch.isStreamList
-                                      ? receipts
-                                      : historyPageSearch.searchedReceiptsList);
-                              sendEmailLoadingState.notLoading();
-                            },
-                            icon: const Icon(
-                              Icons.email,
-                              color: Color.fromRGBO(0, 0, 254, 1),
+                      sendEmailLoadingState.isLoading
+                          ? Container()
+                          : FloatingBtn(
+                              onTap: () async {
+                                HapticFeedback.vibrate();
+                                sendEmailLoadingState.loading();
+                                await downloadAndEmail.sendPdfToEmail(
+                                    context,
+                                    historyPageSearch.isStreamList
+                                        ? receipts
+                                        : historyPageSearch
+                                            .searchedReceiptsList);
+                                sendEmailLoadingState.notLoading();
+                              },
+                              icon: const Icon(
+                                Icons.email,
+                                color: Color.fromRGBO(0, 0, 254, 1),
+                              ),
                             ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

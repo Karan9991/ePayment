@@ -12,8 +12,7 @@ class SubscriptionHandle extends ChangeNotifier {
       RetrieveUserDataProvider();
 
   detectSubscriptionState(context) async {
-    await retrieveUserDataProvider
-        .getUserDataFromFirestore();
+    await retrieveUserDataProvider.getUserDataFromFirestore();
     DateTime dateNow = await NTP.now();
     isSubscriptionStillValid =
         dateNow.isBefore(retrieveUserDataProvider.subscriptionEndDate);
@@ -25,9 +24,10 @@ class SubscriptionHandle extends ChangeNotifier {
       await CodeHandling().getOneYearCodeFromFirebase();
       await CodeHandling().getOneMonthCodeFromFirebase();
       await CodeHandling().getOneWeekCodeFromFirebase();
+      await CodeHandling().getFreeLicenseCodeFromFirebase();
+
       NavigateToScreen().navToScreen(context, const SubscriptionEndedScreen());
     }
     notifyListeners();
   }
-
 }

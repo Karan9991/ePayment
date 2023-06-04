@@ -68,6 +68,7 @@ class InterstitialAdManager {
   InterstitialAd? _interstitialAd;
 
   void loadInterstitialAd() {
+  
     InterstitialAd.load(
       adUnitId: 'ca-app-pub-3940256099942544/1033173712',
       request: AdRequest(),

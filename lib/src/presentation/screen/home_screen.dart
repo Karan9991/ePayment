@@ -1,4 +1,5 @@
 import 'package:e_payment/src/presentation/screen/ad.dart';
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:e_payment/src/presentation/screen/edit_email_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -261,7 +262,7 @@ class HomeScreen extends StatelessWidget {
                           Icon(
                             Icons.verified_user_rounded,
                             size: 20,
-                            color: Colors.blue,
+                            color: Colors.white,
                           ),
                           SizedBox(width: 5),
                           Text(
@@ -270,7 +271,7 @@ class HomeScreen extends StatelessWidget {
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
-                              color: Colors.blue,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -786,6 +787,15 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: 136.0), // Adjust the value as needed
+                          child: Column(
+                            children: [
+                              BannerAdWidget(), // Display the banner ad
+                            ],
+                          ),
+                        )
                       ],
                     ),
             ),
