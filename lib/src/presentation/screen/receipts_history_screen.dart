@@ -11,6 +11,7 @@ import '../../data/receipt_model.dart';
 import '../widget/floating_action_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class ReceiptsHistoryScreen extends StatelessWidget {
 //   const ReceiptsHistoryScreen({Key? key}) : super(key: key);
@@ -56,6 +57,12 @@ class ReceiptsHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> storeUserSubscriptionStatus(
+        String userSubscriptionStatus) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userSubscriptionStatus', userSubscriptionStatus);
+    }
+
     ReceiptFirestore checkReceiptExistence =
         Provider.of<ReceiptFirestore>(context);
     // Get the current user ID using Firebase Authentication
@@ -80,6 +87,8 @@ class ReceiptsHistoryScreen extends StatelessWidget {
           // Extract the user subscription status from the retrieved data
           String userSubscriptionStatus =
               userData['userSubscriptionStatus'] ?? '';
+          storeUserSubscriptionStatus(userSubscriptionStatus);
+
           print("subscription status $userSubscriptionStatus");
           // Check the user subscription status and disable search bar and download button if necessary
           //   bool userSubscriptionStatuss = userSubscriptionStatus != 'free license code';
