@@ -1,3 +1,4 @@
+import 'package:e_payment/src/data/free_code_list.dart';
 import 'package:e_payment/src/presentation/screen/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class SignupProvider extends ChangeNotifier {
       userSubscriptionStatus = "one month access";
     } else if (weekCodeList.contains(subscriptionCode)) {
       userSubscriptionStatus = "one week access";
-    } else if (weekCodeList.contains(subscriptionCode)) {
+    } else if (freeCodeList.contains(subscriptionCode)) {
       userSubscriptionStatus = "free code access";
     } else {
       userSubscriptionStatus = "wrong code";

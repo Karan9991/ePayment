@@ -62,7 +62,7 @@ class SignInProvider with ChangeNotifier {
 
   signInPressed(context, bool isLoggedIn) async {
     if (isLoggedIn == true) {
-      _signInError = 'User already logged-in on another device';
+      _signInError = 'You cannot use one license more than one device';
       notifyListeners();
     } else {
       await signIn();

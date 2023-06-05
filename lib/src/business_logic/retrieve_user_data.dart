@@ -8,8 +8,8 @@ class RetrieveUserDataProvider extends ChangeNotifier {
   String? userName;
   String? userEmail;
   DateTime? subscriptionDate;
-  DateTime subscriptionEndDate=DateTime(2020);
-  String formattedSubscriptionEndDate="";
+  DateTime subscriptionEndDate = DateTime(2020);
+  String formattedSubscriptionEndDate = "";
   String? userSubscriptionStatus;
   final UserDataProvider _userDataProvider = UserDataProvider();
   final _db = FirebaseFirestore.instance;
@@ -28,12 +28,14 @@ class RetrieveUserDataProvider extends ChangeNotifier {
           subscriptionEndDate = _userDataProvider.subscriptionEndDate!;
           userSubscriptionStatus = _userDataProvider.userSubscriptionStatus;
 
+          print(
+              "RRRRRRRRRRRRRRetrieveUserDataProvider userSubscriptionStatus $userSubscriptionStatus");
+
           final DateFormat formatter = DateFormat('yyyy-MM-dd');
           formattedSubscriptionEndDate = formatter.format(subscriptionEndDate);
           notifyListeners();
         },
       );
-
     } else {
       return;
     }

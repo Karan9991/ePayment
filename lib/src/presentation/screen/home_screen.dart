@@ -61,8 +61,16 @@ class HomeScreen extends StatelessWidget {
             // return Text('Error: ${snapshot.error}');
           }
 
-          final userSubscriptionStatus =
-              snapshot.data?.get('userSubscriptionStatus') as String?;
+          // final userSubscriptionStatus =
+          //     snapshot.data?.get('userSubscriptionStatus') as String?;
+          //working
+          //  final retrieveUserDataProvider = RetrieveUserDataProvider();
+          final subscriptionStatus =
+              retrieveUserDataProvider.userSubscriptionStatus;
+
+          final userSubscriptionStatus = subscriptionStatus;
+
+          print('UUUUUUUUUUUser Subscription Status: $subscriptionStatus');
 
           return Scaffold(
             appBar: AppBar(
@@ -278,12 +286,9 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             // Handle the "Don't want any ads? Upgrade" action here
                             HapticFeedback.vibrate();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MyAd()),
-                            );
-                            // RequestCode().launchInBrowser(
-                            //     Uri.parse("http://m.me/enegosyoofficial"));
+
+                            RequestCode().launchInBrowser(Uri.parse(
+                                "https://www.facebook.com/eNegosyoOfficial"));
                           },
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -321,7 +326,7 @@ class HomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: ChangeNotifierProvider(
                     create: (_) => PhotoProvider(),
-                    child: auth.currentUser?.email == "admin@admin.com"
+                    child: auth.currentUser?.email == "timer33@gmail.com"
                         ? Padding(
                             padding: const EdgeInsets.only(top: 200),
                             child: Column(
@@ -495,76 +500,76 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ), // add oneYear Btn
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      HapticFeedback.vibrate();
+                                // Padding(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   child: GestureDetector(
+                                //     onTap: () async {
+                                //       HapticFeedback.vibrate();
 
-                                      if (codeHandling.code != "" &&
-                                          codeHandling.code != '' &&
-                                          codeHandling.code != null) {
-                                        await codeHandling
-                                            .addOneMonthCodeToFirebase();
+                                //       if (codeHandling.code != "" &&
+                                //           codeHandling.code != '' &&
+                                //           codeHandling.code != null) {
+                                //         await codeHandling
+                                //             .addOneMonthCodeToFirebase();
 
-                                        if (!context.mounted) {
-                                          return;
-                                        }
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          content: Text(
-                                            "One Month Code Added !",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontFamily: "Poppins",
-                                            ),
-                                          ),
-                                        ));
-                                      } else {
-                                        if (!context.mounted) {
-                                          return;
-                                        }
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              "Can Not Add Empty Code !",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontFamily: "Poppins",
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: Center(
-                                      child: Container(
-                                          height: 50,
-                                          width: 200,
-                                          decoration: BoxDecoration(
-                                              color: const Color.fromRGBO(
-                                                  0, 0, 254, 1),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: const Center(
-                                              child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Add One Month Code",
-                                                style: TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ))),
-                                    ),
-                                  ),
-                                ),
+                                //         if (!context.mounted) {
+                                //           return;
+                                //         }
+                                //         ScaffoldMessenger.of(context)
+                                //             .showSnackBar(const SnackBar(
+                                //           content: Text(
+                                //             "One Month Code Added !",
+                                //             style: TextStyle(
+                                //               fontSize: 15,
+                                //               fontFamily: "Poppins",
+                                //             ),
+                                //           ),
+                                //         ));
+                                //       } else {
+                                //         if (!context.mounted) {
+                                //           return;
+                                //         }
+                                //         ScaffoldMessenger.of(context)
+                                //             .showSnackBar(
+                                //           const SnackBar(
+                                //             content: Text(
+                                //               "Can Not Add Empty Code !",
+                                //               style: TextStyle(
+                                //                 fontSize: 15,
+                                //                 fontFamily: "Poppins",
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         );
+                                //       }
+                                //     },
+                                //     child: Center(
+                                //       child: Container(
+                                //           height: 50,
+                                //           width: 200,
+                                //           decoration: BoxDecoration(
+                                //               color: const Color.fromRGBO(
+                                //                   0, 0, 254, 1),
+                                //               borderRadius:
+                                //                   BorderRadius.circular(10)),
+                                //           child: const Center(
+                                //               child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             children: [
+                                //               Text(
+                                //                 "Add One Month Code",
+                                //                 style: TextStyle(
+                                //                     fontFamily: "Poppins",
+                                //                     color: Colors.white,
+                                //                     fontWeight:
+                                //                         FontWeight.bold),
+                                //               ),
+                                //             ],
+                                //           ))),
+                                //     ),
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: GestureDetector(
@@ -836,7 +841,7 @@ class HomeScreen extends StatelessWidget {
                                       ],
                                     ),
                               if (userSubscriptionStatus == '' ||
-                                  userSubscriptionStatus == 'free license code')
+                                  userSubscriptionStatus == 'free code access')
                                 Container(
                                   margin: EdgeInsets.only(
                                       top: 136.0), // Adjust the value as needed

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_payment/src/business_logic/navigate_to_screen.dart';
+import 'package:e_payment/src/data/free_code_list.dart';
 import 'package:e_payment/src/presentation/screen/home_screen.dart';
 import 'package:e_payment/src/presentation/screen/receipt_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,57 +32,58 @@ class RenewSubscription extends ChangeNotifier {
     }
     notifyListeners();
   }
+
   _setSubscriptionEndStartDates() async {
     DateTime dateNow = await NTP.now();
     newSubscriptionDate = dateNow;
     if (userSubscriptionStatus != "life time access" &&
-        userSubscriptionStatus != "one month access"&& userSubscriptionStatus != "one week access") {
+        userSubscriptionStatus != "one month access" &&
+        userSubscriptionStatus != "one week access") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year + 1,
           newSubscriptionDate!.month, newSubscriptionDate!.day);
     } else if (userSubscriptionStatus != "life time access" &&
-        userSubscriptionStatus != "one year access" &&userSubscriptionStatus != "one week access" &&
+        userSubscriptionStatus != "one year access" &&
+        userSubscriptionStatus != "one week access" &&
         userSubscriptionStatus == "one month access") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year,
           newSubscriptionDate!.month + 1, newSubscriptionDate!.day);
-    } if (userSubscriptionStatus != "life time access" &&
-        userSubscriptionStatus != "one year access" && userSubscriptionStatus == "one week access" &&
+    }
+    if (userSubscriptionStatus != "life time access" &&
+        userSubscriptionStatus != "one year access" &&
+        userSubscriptionStatus == "one week access" &&
         userSubscriptionStatus != "one month access") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year,
-          newSubscriptionDate!.month , newSubscriptionDate!.day+7);
-    }
-    else {
+          newSubscriptionDate!.month, newSubscriptionDate!.day + 7);
+    } else {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year + 100,
           newSubscriptionDate!.month, newSubscriptionDate!.day);
     }
 
     notifyListeners();
   }
+
   _getSubscriptionCodeStatus(code) {
     if (lifeTimeCodeList.contains(code)) {
       userSubscriptionStatus = "life time access";
       notifyListeners();
-
     } else if (oneYearCodeList.contains(code)) {
       userSubscriptionStatus = "one year access";
       notifyListeners();
-
     } else if (oneMonthCodeList.contains(code)) {
       userSubscriptionStatus = "one month access";
       notifyListeners();
-
-    }  else if (weekCodeList.contains(code)) {
+    } else if (weekCodeList.contains(code)) {
       userSubscriptionStatus = "one week access";
       notifyListeners();
-
+    } else if (freeCodeList.contains(code)) {
+      userSubscriptionStatus = "free code access";
+      notifyListeners();
     } else {
       userSubscriptionStatus = "wrong code";
       notifyListeners();
-
     }
     notifyListeners();
   }
-
-
 
   _updateUserData() async {
     final usersRef = _db.collection("users").doc(_auth.currentUser!.uid);

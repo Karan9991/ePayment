@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'one_session_login.dart';
 
 class UserActivityDetector extends StatefulWidget {
-   const UserActivityDetector({Key? key, required this.child}) : super(key: key);
+  const UserActivityDetector({Key? key, required this.child}) : super(key: key);
   final Widget child;
 
   @override
@@ -26,22 +26,22 @@ class _UserActivityDetectorState extends State<UserActivityDetector> {
     SignInProvider signInProvider = Provider.of<SignInProvider>(context);
     SignupProvider signupProvider = Provider.of<SignupProvider>(context);
     final AutoLogoutService autoLogoutService = AutoLogoutService(
-        oneSession: oneSessionLogin,
-        signin: signInProvider,
-        signup: signupProvider,
+      oneSession: oneSessionLogin,
+      signin: signInProvider,
+      signup: signupProvider,
     );
 
-      if (auth != null) {
-        autoLogoutService.startNewTimer();
-      }
+    if (auth != null) {
+      // autoLogoutService.startNewTimer();
+    }
 
     // FocusScope.of(context).requestFocus(focusNode);
-    return
-     GestureDetector(
-        // Important for detecting the clicks properly for clickable and non-clickable places.
-        behavior: HitTestBehavior.deferToChild,
-        onTapDown: autoLogoutService.trackUserActivity,
-        child: widget.child,
-      );
+    return GestureDetector(
+      // Important for detecting the clicks properly for clickable and non-clickable places.
+      //behavior: HitTestBehavior.deferToChild,
+      //onTapDown: autoLogoutService.trackUserActivity,
+      child: widget.child,
+    );
+    // return Container();
   }
 }

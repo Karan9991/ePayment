@@ -182,13 +182,13 @@ class SignInScreen extends StatelessWidget {
                               },
                               title: 'Forgot Password ?',
                             ),
-                            ForgotButton(
-                              onPressed: () {
-                                NavigateToScreen()
-                                    .navToScreen(context, const ResetEmail());
-                              },
-                              title: 'Forgot Email ?',
-                            ),
+                            // ForgotButton(
+                            //   onPressed: () {
+                            //     NavigateToScreen()
+                            //         .navToScreen(context, const ResetEmail());
+                            //   },
+                            //   title: 'Forgot Email ?',
+                            // ),
                           ],
                         ),
                       ),

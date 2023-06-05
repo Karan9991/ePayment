@@ -7,7 +7,7 @@ import '../global_context.dart';
 
 class AutoLogoutService {
   static Timer? _timer;
-  static const autoLogoutTimer = 15;
+  static const autoLogoutTimer = 1;
   var oneSession;
   var signup;
   var signin;

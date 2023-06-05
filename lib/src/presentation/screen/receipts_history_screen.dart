@@ -147,7 +147,7 @@ class ReceiptsList extends StatelessWidget {
         Provider.of<SendEmailLoadingState>(context);
 
     bool isSubscriptionFree = userSubscriptionStatus == '' ||
-        userSubscriptionStatus == 'free license code';
+        userSubscriptionStatus == 'free code access';
 
     return WillPopScope(
       onWillPop: () async {

@@ -115,6 +115,7 @@ class CodeHandling extends ChangeNotifier {
       (DocumentSnapshot doc) async {
         var data = doc.data() as Map<String, dynamic>;
         retrievedFreeCode = data["code"];
+        print("fffffffffreelicense code $retrievedFreeCode");
         freeCodeList.add(retrievedFreeCode);
         notifyListeners();
       },
