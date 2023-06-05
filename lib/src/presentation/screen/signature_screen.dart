@@ -1,7 +1,9 @@
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:signature/signature.dart';
 import '../../business_logic/signature_provider.dart';
+import '../../business_logic/retrieve_user_data.dart';
 
 class SignatureScreen extends StatelessWidget {
   const SignatureScreen({Key? key}) : super(key: key);
@@ -10,6 +12,17 @@ class SignatureScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SignatureProvider signatureProvider =
         Provider.of<SignatureProvider>(context);
+
+         RetrieveUserDataProvider retrieveUserDataProvider =
+        Provider.of<RetrieveUserDataProvider>(context);
+    retrieveUserDataProvider.getUserDataFromFirestore();
+
+   final subscriptionStatus =
+              retrieveUserDataProvider.userSubscriptionStatus;
+
+          final userSubscriptionStatus = subscriptionStatus;
+
+          print('ttttttttesting 2 Subscription Status: $subscriptionStatus');
     // final isPortrait =
     //     MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
@@ -80,6 +93,17 @@ class SignatureScreen extends StatelessWidget {
           //     ),
           //   ),
           // ),
+           if (userSubscriptionStatus == '' ||
+                                  userSubscriptionStatus == 'free code access')
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 5.0), // Adjust the value as needed
+                                  child: Column(
+                                    children: [
+                                      BannerAdWidget(), // Display the banner ad
+                                    ],
+                                  ),
+                                )
         ],
       ),
     );

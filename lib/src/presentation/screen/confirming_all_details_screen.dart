@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../../business_logic/final_receipt_details_to_photo.dart';
 import '../../business_logic/image_provider.dart';
 import '../../business_logic/signature_provider.dart';
 import '../../business_logic/upload_receipt_photo.dart';
+import '../../business_logic/retrieve_user_data.dart';
 
 const TextStyle dataRecognizedStyle = TextStyle(
   color: Color.fromRGBO(7, 38, 85, 1),
@@ -35,6 +37,17 @@ class ConfirmingAllDetails extends StatelessWidget {
     ConfirmationLoadingState confirmationLoadingState =
         Provider.of<ConfirmationLoadingState>(context);
     final PhotoProvider photoProvider = Provider.of<PhotoProvider>(context);
+
+ RetrieveUserDataProvider retrieveUserDataProvider =
+        Provider.of<RetrieveUserDataProvider>(context);
+    retrieveUserDataProvider.getUserDataFromFirestore();
+
+   final subscriptionStatus =
+              retrieveUserDataProvider.userSubscriptionStatus;
+
+          final userSubscriptionStatus = subscriptionStatus;
+
+          print('ttttttttesting 3 Subscription Status: $subscriptionStatus');
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -63,7 +76,7 @@ class ConfirmingAllDetails extends StatelessWidget {
               ),
               Center(
                 child: Container(
-                  height: 555,
+                  height: 575,
                   width: 350,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -143,8 +156,20 @@ class ConfirmingAllDetails extends StatelessWidget {
                                         // Image.file(signatureProvider
                                         //     .signatureImageFile!),
                                       ),
+                                      
                                     ],
                                   ),
+                                //        if (userSubscriptionStatus == '' ||
+                                //   userSubscriptionStatus == 'free code access')
+                                // Container(
+                                //   margin: EdgeInsets.only(
+                                //       top: 5.0), // Adjust the value as needed
+                                //   child: Column(
+                                //     children: [
+                                //       BannerAdWidget(), // Display the banner ad
+                                //     ],
+                                //   ),
+                                // )
                                 ],
                               ),
                             ),
@@ -152,8 +177,19 @@ class ConfirmingAllDetails extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 0,
                       ),
+                                if (userSubscriptionStatus == '' ||
+                                  userSubscriptionStatus == 'free code access')
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: 10.0), // Adjust the value as needed
+                                  child: Column(
+                                    children: [
+                                      BannerAdWidget(), // Display the banner ad
+                                    ],
+                                  ),
+                                )
                     ],
                   ),
                 ),
@@ -197,6 +233,7 @@ class ConfirmingAllDetails extends StatelessWidget {
                                   fontFamily: "Poppins",
                                 ),
                               )
+                              
                             ],
                           )
                         : Container(
@@ -295,6 +332,7 @@ class ReceiptWidget extends StatelessWidget {
              // Image.file(signatureProvider
              //     .signatureImageFile!),
            ),
+       
          ],
        ),
      ],

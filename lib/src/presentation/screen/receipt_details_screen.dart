@@ -1,4 +1,4 @@
-
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +11,7 @@ import '../../business_logic/navigate_to_screen.dart';
 import '../../business_logic/recognize_photo_text.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import '../widget/exist_receipt_alert_widget.dart';
+import '../../business_logic/retrieve_user_data.dart';
 
 const TextStyle dataRecognizedStyle = TextStyle(
   color: Color.fromRGBO(7, 38, 85, 1),
@@ -25,12 +26,21 @@ class ReceiptDetailsScreen extends StatelessWidget {
     final AddFee addFee = Provider.of<AddFee>(context);
 
     ConfirmingPhotoLoadingState confirmingPhotoLoadingState =
-    Provider.of<ConfirmingPhotoLoadingState>(context);
+        Provider.of<ConfirmingPhotoLoadingState>(context);
     AddSignatureLoadingState addSignatureLoadingState =
-    Provider.of<AddSignatureLoadingState>(context);
+        Provider.of<AddSignatureLoadingState>(context);
     final ReceiptFirestore receiptFirestore =
-    Provider.of<ReceiptFirestore>(context);
+        Provider.of<ReceiptFirestore>(context);
 
+    RetrieveUserDataProvider retrieveUserDataProvider =
+        Provider.of<RetrieveUserDataProvider>(context);
+    retrieveUserDataProvider.getUserDataFromFirestore();
+
+    final subscriptionStatus = retrieveUserDataProvider.userSubscriptionStatus;
+
+    final userSubscriptionStatus = subscriptionStatus;
+
+    print('ttttttttesting 1 Subscription Status: $subscriptionStatus');
 
     return Scaffold(
       appBar: AppBar(
@@ -101,106 +111,107 @@ class ReceiptDetailsScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  recognizeText.refNo == null ||     recognizeText.refNo == ""
+                                  recognizeText.refNo == null ||
+                                          recognizeText.refNo == ""
                                       ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextField(
-                                          onChanged: (refNo) {
-                                            recognizeText.refNo = refNo;
-                                            // int.parse(refNo);
-                                          },
-                                          decoration:
-                                          const InputDecoration(
-                                            labelText:
-                                            "Enter Reference Number Here",
-                                            labelStyle: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  7, 38, 85, 1),
+                                          children: [
+                                            Expanded(
+                                              child: TextField(
+                                                onChanged: (refNo) {
+                                                  recognizeText.refNo = refNo;
+                                                  // int.parse(refNo);
+                                                },
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText:
+                                                      "Enter Reference Number Here",
+                                                  labelStyle: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        7, 38, 85, 1),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10),
+                                                  hintText:
+                                                      "Enter Reference Number",
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.black12),
+                                                ),
+                                              ),
                                             ),
-                                            contentPadding:
-                                            EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            hintText:
-                                            "Enter Reference Number",
-                                            hintStyle: TextStyle(
-                                                color: Colors.black12),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ) //RefNo
+                                          ],
+                                        ) //RefNo
                                       : Text(
-                                    "Ref NO. : ${recognizeText.refNo}",
-                                    style: dataRecognizedStyle,
-                                  ),
+                                          "Ref NO. : ${recognizeText.refNo}",
+                                          style: dataRecognizedStyle,
+                                        ),
                                   recognizeText.amount == null
                                       ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextField(
-                                          onChanged: (amount) {
-                                            recognizeText.amount =
-                                                int.parse(amount);
-                                          },
-                                          decoration:
-                                          const InputDecoration(
-                                            labelText: "Enter Amount",
-                                            labelStyle: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  7, 38, 85, 1),
+                                          children: [
+                                            Expanded(
+                                              child: TextField(
+                                                onChanged: (amount) {
+                                                  recognizeText.amount =
+                                                      int.parse(amount);
+                                                },
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: "Enter Amount",
+                                                  labelStyle: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        7, 38, 85, 1),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10),
+                                                  hintText: "Enter Amount Here",
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.black12),
+                                                ),
+                                              ),
                                             ),
-                                            contentPadding:
-                                            EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            hintText: "Enter Amount Here",
-                                            hintStyle: TextStyle(
-                                                color: Colors.black12),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ) //amount
+                                          ],
+                                        ) //amount
                                       : Text(
-                                    "Amount : P${recognizeText.amount}",
-                                    style: dataRecognizedStyle,
-                                  ),
-                                  recognizeText.dateAndTime == null ||recognizeText.dateAndTime  == ""
+                                          "Amount : P${recognizeText.amount}",
+                                          style: dataRecognizedStyle,
+                                        ),
+                                  recognizeText.dateAndTime == null ||
+                                          recognizeText.dateAndTime == ""
                                       ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextField(
-                                          onChanged: (dateAndTime) {
-                                            recognizeText.dateAndTime =
-                                                dateAndTime;
-                                          },
-                                          decoration:
-                                          const InputDecoration(
-                                            labelText:
-                                            "Enter Date And Time",
-                                            labelStyle: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  7, 38, 85, 1),
+                                          children: [
+                                            Expanded(
+                                              child: TextField(
+                                                onChanged: (dateAndTime) {
+                                                  recognizeText.dateAndTime =
+                                                      dateAndTime;
+                                                },
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText:
+                                                      "Enter Date And Time",
+                                                  labelStyle: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        7, 38, 85, 1),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10),
+                                                  hintText:
+                                                      "Enter Date And Time Here",
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.black12),
+                                                ),
+                                              ),
                                             ),
-                                            contentPadding:
-                                            EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            hintText:
-                                            "Enter Date And Time Here",
-                                            hintStyle: TextStyle(
-                                                color: Colors.black12),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ) //dateAndTime
+                                          ],
+                                        ) //dateAndTime
                                       : Text(
-                                    "Receipt Date : ${recognizeText
-                                        .dateAndTime}",
-                                    style: dataRecognizedStyle,
-                                  ),
+                                          "Receipt Date : ${recognizeText.dateAndTime}",
+                                          style: dataRecognizedStyle,
+                                        ),
                                   Text(
                                     "Receiving Date : ${recognizeText.dateNow}",
                                     style: dataRecognizedStyle,
@@ -220,11 +231,11 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                             labelText: "Enter Name Here",
                                             labelStyle: TextStyle(
                                               color:
-                                              Color.fromRGBO(7, 38, 85, 1),
+                                                  Color.fromRGBO(7, 38, 85, 1),
                                             ),
                                             contentPadding:
-                                            EdgeInsets.symmetric(
-                                                horizontal: 10),
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 10),
                                             hintText: "Enter name",
                                             hintStyle: TextStyle(
                                                 color: Colors.black12),
@@ -265,20 +276,20 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                         ),
                                         items: addFee.items
                                             .map((item) =>
-                                            DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                                overflow:
-                                                TextOverflow.ellipsis,
-                                              ),
-                                            ))
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ))
                                             .toList(),
                                         value: addFee.selectedOption,
                                         onChanged: (option) {
@@ -296,7 +307,7 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                             left: 14, right: 14),
                                         buttonDecoration: BoxDecoration(
                                           borderRadius:
-                                          BorderRadius.circular(14),
+                                              BorderRadius.circular(14),
                                           border: Border.all(
                                             color: Colors.black26,
                                           ),
@@ -312,13 +323,13 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                         dropdownPadding: null,
                                         dropdownDecoration: BoxDecoration(
                                           borderRadius:
-                                          BorderRadius.circular(14),
+                                              BorderRadius.circular(14),
                                           color: const Color.fromRGBO(
                                               0, 0, 254, 1),
                                         ),
                                         dropdownElevation: 8,
                                         scrollbarRadius:
-                                        const Radius.circular(40),
+                                            const Radius.circular(40),
                                         scrollbarThickness: 6,
                                         scrollbarAlwaysShow: true,
                                         offset: const Offset(-20, 0),
@@ -327,92 +338,91 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                   ),
                                   addFee.selectedOption == "Add Fee"
                                       ? TextField(
-                                    onChanged: (addedFee) {
-                                      int tempAddedFee;
-                                      if (addedFee != '') {
-                                        tempAddedFee =
-                                            int.parse(addedFee);
-                                      } else {
-                                        tempAddedFee = 0;
-                                      }
+                                          onChanged: (addedFee) {
+                                            int tempAddedFee;
+                                            if (addedFee != '') {
+                                              tempAddedFee =
+                                                  int.parse(addedFee);
+                                            } else {
+                                              tempAddedFee = 0;
+                                            }
 
-                                      addFee.setAddedFee(tempAddedFee);
-                                    },
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      labelText: "Enter Fee Value",
-                                      labelStyle: TextStyle(
-                                        color:
-                                        Color.fromRGBO(7, 38, 85, 1),
-                                      ),
-                                      contentPadding:
-                                      EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      hintText: "Enter Fee Value Here",
-                                      hintStyle: TextStyle(
-                                          color: Colors.black12,
-                                          fontSize: 13),
-                                    ),
-                                  )
+                                            addFee.setAddedFee(tempAddedFee);
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          decoration: const InputDecoration(
+                                            labelText: "Enter Fee Value",
+                                            labelStyle: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(7, 38, 85, 1),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 10),
+                                            hintText: "Enter Fee Value Here",
+                                            hintStyle: TextStyle(
+                                                color: Colors.black12,
+                                                fontSize: 13),
+                                          ),
+                                        )
                                       : addFee.selectedOption ==
-                                      "Percentage Fee"
-                                      ? TextField(
-                                    onChanged: (percentageOfFee) {
-                                      var tempPercentageOfFee =
-                                      int.parse(percentageOfFee);
-                                      addFee.setPercentageOfFee(
-                                          tempPercentageOfFee);
-                                    },
-                                    keyboardType:
-                                    TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      labelText:
-                                      "Percentage Of Fee %",
-                                      labelStyle: TextStyle(
-                                          color: Color.fromRGBO(
-                                              7, 38, 85, 1),
-                                          fontSize: 13),
-                                      contentPadding:
-                                      EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      hintText:
-                                      "Enter Percentage Of Fee Here",
-                                      hintStyle: TextStyle(
-                                          color: Colors.black12),
-                                    ),
-                                  )
-                                      : TextField(
-                                    onChanged: (deductFee) {
-                                      var deductedFee =
-                                      int.parse(deductFee);
-                                      addFee.setDeductedFee(
-                                          deductedFee);
-                                    },
-                                    keyboardType:
-                                    TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      labelText: "Deduct value",
-                                      labelStyle: TextStyle(
-                                          color: Color.fromRGBO(
-                                              7, 38, 85, 1),
-                                          fontSize: 13),
-                                      contentPadding:
-                                      EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      hintText:
-                                      "Enter Deducted value Here",
-                                      hintStyle: TextStyle(
-                                          color: Colors.black12),
-                                    ),
-                                  ),
+                                              "Percentage Fee"
+                                          ? TextField(
+                                              onChanged: (percentageOfFee) {
+                                                var tempPercentageOfFee =
+                                                    int.parse(percentageOfFee);
+                                                addFee.setPercentageOfFee(
+                                                    tempPercentageOfFee);
+                                              },
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: const InputDecoration(
+                                                labelText:
+                                                    "Percentage Of Fee %",
+                                                labelStyle: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        7, 38, 85, 1),
+                                                    fontSize: 13),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                hintText:
+                                                    "Enter Percentage Of Fee Here",
+                                                hintStyle: TextStyle(
+                                                    color: Colors.black12),
+                                              ),
+                                            )
+                                          : TextField(
+                                              onChanged: (deductFee) {
+                                                var deductedFee =
+                                                    int.parse(deductFee);
+                                                addFee.setDeductedFee(
+                                                    deductedFee);
+                                              },
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              decoration: const InputDecoration(
+                                                labelText: "Deduct value",
+                                                labelStyle: TextStyle(
+                                                    color: Color.fromRGBO(
+                                                        7, 38, 85, 1),
+                                                    fontSize: 13),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                hintText:
+                                                    "Enter Deducted value Here",
+                                                hintStyle: TextStyle(
+                                                    color: Colors.black12),
+                                              ),
+                                            ),
                                   GestureDetector(
                                     onTap: () {
                                       HapticFeedback.vibrate();
 
                                       addFee.setAmount(recognizeText.amount);
 
-                                      if (addFee.selectedOption ==
-                                          "Add Fee") {
+                                      if (addFee.selectedOption == "Add Fee") {
                                         addFee.manuallyAddFee();
                                       } else if (addFee.selectedOption ==
                                           "Percentage Fee") {
@@ -430,24 +440,38 @@ class ReceiptDetailsScreen extends StatelessWidget {
                                               color: const Color.fromRGBO(
                                                   0, 0, 254, 1),
                                               borderRadius:
-                                              BorderRadius.circular(10)),
+                                                  BorderRadius.circular(10)),
                                           child: const Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "Calculate",
-                                                    style: TextStyle(
-                                                        fontFamily: "Poppins",
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                        FontWeight.bold),
-                                                  ),
-                                                ],
-                                              ))),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Calculate",
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
                                     ),
                                   ),
+                                  if (userSubscriptionStatus == '' ||
+                                      userSubscriptionStatus ==
+                                          'free code access')
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top:
+                                              5.0), // Adjust the value as needed
+                                      child: Column(
+                                        children: [
+                                          BannerAdWidget(), // Display the banner ad
+                                        ],
+                                      ),
+                                    )
                                 ],
                               ),
                             ),
@@ -462,97 +486,97 @@ class ReceiptDetailsScreen extends StatelessWidget {
                 ),
                 addSignatureLoadingState.isLoading
                     ? const Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircularProgressIndicator(color: Colors.green),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Loading...",
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontFamily: "Poppins",
-                      ),
-                    )
-                  ],
-                )
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircularProgressIndicator(color: Colors.green),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Loading...",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontFamily: "Poppins",
+                            ),
+                          )
+                        ],
+                      )
                     : GestureDetector(
-                  onTap: () async {
-                    HapticFeedback.vibrate();
+                        onTap: () async {
+                          HapticFeedback.vibrate();
 
-                    addSignatureLoadingState.loading();
-                    if (recognizeText.receiptName != null &&
-                        addFee.totalAmount != 0.0) {
-                      await receiptFirestore.getReceiptDataFromFirestore(
-                          recognizeText.refNo);
-                      if (receiptFirestore.isExist != true) {
-                        if (!context.mounted) return;
-                        NavigateToScreen().navToScreen(
-                            context, const SignatureScreen());
-                      } else {
-                        await receiptFirestore.downloadReceiptsPhoto(
-                            receiptFirestore
-                                .existOriginalReceiptPhotoLink!,
-                            true);
-                        await receiptFirestore.downloadReceiptsPhoto(
-                            receiptFirestore.existReceiptPhotoLink!,
-                            false);
+                          addSignatureLoadingState.loading();
+                          if (recognizeText.receiptName != null &&
+                              addFee.totalAmount != 0.0) {
+                            await receiptFirestore.getReceiptDataFromFirestore(
+                                recognizeText.refNo);
+                            if (receiptFirestore.isExist != true) {
+                              if (!context.mounted) return;
+                              NavigateToScreen().navToScreen(
+                                  context, const SignatureScreen());
+                            } else {
+                              await receiptFirestore.downloadReceiptsPhoto(
+                                  receiptFirestore
+                                      .existOriginalReceiptPhotoLink!,
+                                  true);
+                              await receiptFirestore.downloadReceiptsPhoto(
+                                  receiptFirestore.existReceiptPhotoLink!,
+                                  false);
 
-                        if (!context.mounted) return;
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            final SwitchReceiptPhoto
-                            switchAlertReceiptPhoto =
-                            Provider.of<SwitchReceiptPhoto>(context);
-                            final ReceiptFirestore receiptAlertFirestore =
-                            Provider.of<ReceiptFirestore>(context);
-                            return ExistReceiptAlertWidget(
-                                switchReceiptPhoto:
-                                switchAlertReceiptPhoto,
-                                receiptFirestore: receiptAlertFirestore);
-                          },
-                        );
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                "Please add 'Name' & 'Fee' ",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                              backgroundColor:
-                              Color.fromRGBO(0, 0, 254, 1)));
-                    }
-                    addSignatureLoadingState.notLoading();
-                  },
-                  child: Center(
-                    child: Container(
-                        height: 50,
-                        width: 150,
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(0, 0, 254, 1),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Add Signature",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Poppins",
-                                      fontSize: 15),
-                                ),
-                              ],
-                            ))),
-                  ),
-                ),
+                              if (!context.mounted) return;
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  final SwitchReceiptPhoto
+                                      switchAlertReceiptPhoto =
+                                      Provider.of<SwitchReceiptPhoto>(context);
+                                  final ReceiptFirestore receiptAlertFirestore =
+                                      Provider.of<ReceiptFirestore>(context);
+                                  return ExistReceiptAlertWidget(
+                                      switchReceiptPhoto:
+                                          switchAlertReceiptPhoto,
+                                      receiptFirestore: receiptAlertFirestore);
+                                },
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                      "Please add 'Name' & 'Fee' ",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins",
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        Color.fromRGBO(0, 0, 254, 1)));
+                          }
+                          addSignatureLoadingState.notLoading();
+                        },
+                        child: Center(
+                          child: Container(
+                              height: 50,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(0, 0, 254, 1),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Center(
+                                  child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Add Signature",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Poppins",
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              ))),
+                        ),
+                      ),
               ],
             ),
           ),

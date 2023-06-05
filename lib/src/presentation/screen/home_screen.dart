@@ -326,7 +326,7 @@ class HomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: ChangeNotifierProvider(
                     create: (_) => PhotoProvider(),
-                    child: auth.currentUser?.email == "timer33@gmail.com"
+                    child: auth.currentUser?.email == "admin@admin.com"
                         ? Padding(
                             padding: const EdgeInsets.only(top: 200),
                             child: Column(
@@ -844,7 +844,7 @@ class HomeScreen extends StatelessWidget {
                                   userSubscriptionStatus == 'free code access')
                                 Container(
                                   margin: EdgeInsets.only(
-                                      top: 136.0), // Adjust the value as needed
+                                      top: 75.0), // Adjust the value as needed
                                   child: Column(
                                     children: [
                                       BannerAdWidget(), // Display the banner ad

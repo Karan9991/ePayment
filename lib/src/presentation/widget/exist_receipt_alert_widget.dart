@@ -1,9 +1,13 @@
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
 import '../../business_logic/receipt_firestore.dart';
 import '../../business_logic/share_provider.dart';
 import '../../business_logic/siwtch_original_photo_final_receipt_photo.dart';
+import '../../business_logic/retrieve_user_data.dart';
+import 'package:provider/provider.dart';
+
 class ExistReceiptAlertWidget extends StatelessWidget {
   const ExistReceiptAlertWidget({
     super.key,
@@ -16,6 +20,16 @@ class ExistReceiptAlertWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RetrieveUserDataProvider retrieveUserDataProvider =
+        Provider.of<RetrieveUserDataProvider>(context);
+    retrieveUserDataProvider.getUserDataFromFirestore();
+
+    final subscriptionStatus = retrieveUserDataProvider.userSubscriptionStatus;
+
+    final userSubscriptionStatus = subscriptionStatus;
+
+    print('tttttttesting 5 Subscription Status: $subscriptionStatus');
+
     return AlertDialog(
       title: const Text(
         "Receipt already exist! ",
@@ -25,52 +39,44 @@ class ExistReceiptAlertWidget extends StatelessWidget {
         ),
       ),
       content: SizedBox(
-        height: 420,
+        height: 475,
         child: Column(
           children: [
             Image.network(
-              switchReceiptPhoto.isOriginal?receiptFirestore.existOriginalReceiptPhotoLink!
-                  :receiptFirestore.existReceiptPhotoLink!,
+              switchReceiptPhoto.isOriginal
+                  ? receiptFirestore.existOriginalReceiptPhotoLink!
+                  : receiptFirestore.existReceiptPhotoLink!,
               height: 300,
               fit: BoxFit.contain,
-              frameBuilder:
-                  (_, image, loadingBuilder, __) {
+              frameBuilder: (_, image, loadingBuilder, __) {
                 if (loadingBuilder == null) {
                   return const SizedBox(
                     height: 300,
                     child: Center(
-                        child:
-                        CircularProgressIndicator(
-                          color: Colors.red,
-                        )),
+                        child: CircularProgressIndicator(
+                      color: Colors.red,
+                    )),
                   );
                 }
                 return image;
               },
-              loadingBuilder: (BuildContext context,
-                  Widget image,
+              loadingBuilder: (BuildContext context, Widget image,
                   ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null)
-                  return image;
+                if (loadingProgress == null) return image;
                 return SizedBox(
                   height: 300,
                   child: Center(
                     child: CircularProgressIndicator(
-                      value: loadingProgress
-                          .expectedTotalBytes !=
-                          null
-                          ? loadingProgress
-                          .cumulativeBytesLoaded /
-                          loadingProgress
-                              .expectedTotalBytes!
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
                           : null,
                       color: Colors.red,
                     ),
                   ),
                 );
               },
-              errorBuilder: (_, __, ___) =>
-              const Text(
+              errorBuilder: (_, __, ___) => const Text(
                 "Check Internet connection",
                 style: TextStyle(
                   fontFamily: "Poppins",
@@ -78,48 +84,45 @@ class ExistReceiptAlertWidget extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                  onTap: () async{
-
+                  onTap: () async {
                     // NavigateToScreen()
                     //     .navToScreen(context, const PrintExistReceiptScreen());
-                    await  GallerySaver.saveImage(receiptFirestore.existReceiptPhotoFile!.path);
+                    await GallerySaver.saveImage(
+                        receiptFirestore.existReceiptPhotoFile!.path);
                     //
                     //  await SaverGallery.saveFile(file: receiptFirestore.existReceiptPhotoFile!.path,
                     //      androidExistNotSave: true,
                     //      name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-
                         content: Text(
-                          "Receipt Saved Successfully in Gallery !",
-                          style: TextStyle(color: Colors.white,fontFamily: "Poppins",),
-                        )));
-
+                      "Receipt Saved Successfully in Gallery !",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Poppins",
+                      ),
+                    )));
                   },
                   child: const Icon(
                     Icons.download_for_offline_outlined,
                     size: 50,
-                    color:
-                    Color.fromRGBO(7, 38, 85, 1),
+                    color: Color.fromRGBO(7, 38, 85, 1),
                   ),
-                ),//save btn
+                ), //save btn
                 GestureDetector(
                   onTap: () async {
                     await ShareReceipt(
-                        file: receiptFirestore
-                            .existReceiptPhotoFile!)
+                            file: receiptFirestore.existReceiptPhotoFile!)
                         .share();
                   },
                   child: const Icon(
                     Icons.share,
                     size: 50,
-                    color:
-                    Color.fromRGBO(7, 38, 85, 1),
+                    color: Color.fromRGBO(7, 38, 85, 1),
                   ),
-                ),//share btn
+                ), //share btn
               ],
             ),
             Padding(
@@ -156,7 +159,16 @@ class ExistReceiptAlertWidget extends StatelessWidget {
                 ),
               ),
             ),
-
+            if (userSubscriptionStatus == '' ||
+                userSubscriptionStatus == 'free code access')
+              Container(
+                margin: EdgeInsets.only(top: 5.0), // Adjust the value as needed
+                child: Column(
+                  children: [
+                    BannerAdWidget(), // Display the banner ad
+                  ],
+                ),
+              )
           ],
         ),
       ),

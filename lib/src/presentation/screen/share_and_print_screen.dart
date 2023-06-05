@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +13,7 @@ import 'package:e_payment/src/presentation/screen/home_screen.dart';
 import 'package:e_payment/src/presentation/widget/back_button.dart';
 import '../../business_logic/loading_state.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-
-
+import '../../business_logic/retrieve_user_data.dart';
 
 class ShareAndPrintScreen extends StatelessWidget {
   const ShareAndPrintScreen({Key? key}) : super(key: key);
@@ -21,46 +21,60 @@ class ShareAndPrintScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReceiptDetailsToPhoto receiptDetailsToPhoto =
-    Provider.of<ReceiptDetailsToPhoto>(context);
+        Provider.of<ReceiptDetailsToPhoto>(context);
     final SwitchReceiptPhoto switchReceiptPhoto =
-    Provider.of<SwitchReceiptPhoto>(context);
+        Provider.of<SwitchReceiptPhoto>(context);
     final PhotoProvider photoProvider = Provider.of<PhotoProvider>(context);
-    ConfirmationLoadingState confirmationLoadingState=Provider.of<ConfirmationLoadingState>(context);
-    ConfirmingPhotoLoadingState confirmingPhotoLoadingState=Provider.of<ConfirmingPhotoLoadingState>(context);
+    ConfirmationLoadingState confirmationLoadingState =
+        Provider.of<ConfirmationLoadingState>(context);
+    ConfirmingPhotoLoadingState confirmingPhotoLoadingState =
+        Provider.of<ConfirmingPhotoLoadingState>(context);
     final RecognizeText recognizeText = Provider.of<RecognizeText>(context);
     final AddFee addFee = Provider.of<AddFee>(context);
 
+    RetrieveUserDataProvider retrieveUserDataProvider =
+        Provider.of<RetrieveUserDataProvider>(context);
+    retrieveUserDataProvider.getUserDataFromFirestore();
+
+    final subscriptionStatus = retrieveUserDataProvider.userSubscriptionStatus;
+
+    final userSubscriptionStatus = subscriptionStatus;
+
+    print('tttttttesting 4 Subscription Status: $subscriptionStatus');
 
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
           backgroundColor: Colors.white,
-          body:SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10,40,0,0),
-                      child: NavigateBackButton(icon: Icons.home, onPressed: () {
-                        confirmationLoadingState.notLoading();
-                        confirmingPhotoLoadingState.notLoading();
-                        recognizeText.disposeRec();
-                        addFee.disposeFee();
-                        NavigateToScreen().navToScreen(
-                            context, const HomeScreen());
-                      },),
+                      padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
+                      child: NavigateBackButton(
+                        icon: Icons.home,
+                        onPressed: () {
+                          confirmationLoadingState.notLoading();
+                          confirmingPhotoLoadingState.notLoading();
+                          recognizeText.disposeRec();
+                          addFee.disposeFee();
+                          NavigateToScreen()
+                              .navToScreen(context, const HomeScreen());
+                        },
+                      ),
                     )),
                 switchReceiptPhoto.isOriginal
                     ? Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                      height:530,
-                      width: 400,
-                      child: Image.file(photoProvider.photo!)),
-                    )
+                        padding: const EdgeInsets.only(top: 15),
+                        child: SizedBox(
+                            height: 530,
+                            width: 400,
+                            child: Image.file(photoProvider.photo!)),
+                      )
                     : Image.file(
-                    receiptDetailsToPhoto.confirmedReceiptPhotoFile!),
+                        receiptDetailsToPhoto.confirmedReceiptPhotoFile!),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
@@ -72,24 +86,24 @@ class ShareAndPrintScreen extends StatelessWidget {
 
                           // NavigateToScreen()
                           //     .navToScreen(context, const PrintScreen());
-                         await GallerySaver.saveImage( switchReceiptPhoto.isOriginal
-                              ?photoProvider.photo!.path:receiptDetailsToPhoto.confirmedReceiptPhotoFile!.path
-                          );
-                         // await SaverGallery.saveFile(file: switchReceiptPhoto.isOriginal
-                         //     ?photoProvider.photo!.path:receiptDetailsToPhoto.confirmedReceiptPhotoFile!.path,
-                         //     androidExistNotSave: true, name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
+                          await GallerySaver.saveImage(
+                              switchReceiptPhoto.isOriginal
+                                  ? photoProvider.photo!.path
+                                  : receiptDetailsToPhoto
+                                      .confirmedReceiptPhotoFile!.path);
+                          // await SaverGallery.saveFile(file: switchReceiptPhoto.isOriginal
+                          //     ?photoProvider.photo!.path:receiptDetailsToPhoto.confirmedReceiptPhotoFile!.path,
+                          //     androidExistNotSave: true, name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
 
-
-
-
-                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-
-                             content: Text(
-                               "Receipt Saved Successfully in Gallery !",
-                               style: TextStyle(color: Colors.white,fontFamily: "Poppins",),
-                             )));
-
-
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                                  content: Text(
+                            "Receipt Saved Successfully in Gallery !",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                            ),
+                          )));
                         },
                         child: const Icon(
                           Icons.download_for_offline_outlined,
@@ -102,10 +116,10 @@ class ShareAndPrintScreen extends StatelessWidget {
                           HapticFeedback.vibrate();
 
                           await ShareReceipt(
-                              file: switchReceiptPhoto.isOriginal
-                                  ? photoProvider.photo!
-                                  : receiptDetailsToPhoto
-                                  .confirmedReceiptPhotoFile!)
+                                  file: switchReceiptPhoto.isOriginal
+                                      ? photoProvider.photo!
+                                      : receiptDetailsToPhoto
+                                          .confirmedReceiptPhotoFile!)
                               .share();
                         },
                         child: const Icon(
@@ -151,6 +165,17 @@ class ShareAndPrintScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (userSubscriptionStatus == '' ||
+                    userSubscriptionStatus == 'free code access')
+                  Container(
+                    margin:
+                        EdgeInsets.only(top: 5.0), // Adjust the value as needed
+                    child: Column(
+                      children: [
+                        BannerAdWidget(), // Display the banner ad
+                      ],
+                    ),
+                  )
               ],
             ),
           )),

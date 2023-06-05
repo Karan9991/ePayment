@@ -1,3 +1,4 @@
+import 'package:e_payment/src/presentation/screen/banner_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ import '../widget/floating_action_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../business_logic/retrieve_user_data.dart';
 
 // class ReceiptsHistoryScreen extends StatelessWidget {
 //   const ReceiptsHistoryScreen({Key? key}) : super(key: key);
@@ -89,7 +91,7 @@ class ReceiptsHistoryScreen extends StatelessWidget {
               userData['userSubscriptionStatus'] ?? '';
           storeUserSubscriptionStatus(userSubscriptionStatus);
 
-          print("subscription status $userSubscriptionStatus");
+          print("sssssssubscription status $userSubscriptionStatus");
           print("uuuuuuuuuser data  $userData");
 
           // Check the user subscription status and disable search bar and download button if necessary
@@ -450,6 +452,19 @@ class ReceiptsList extends StatelessWidget {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 13),
                                             ),
+                                            // if (userSubscriptionStatus == '' ||
+                                            //     userSubscriptionStatus ==
+                                            //         'free code access')
+                                            // Container(
+                                            //   margin: EdgeInsets.only(
+                                            //       top:
+                                            //           5.0), // Adjust the value as needed
+                                            //   child: Column(
+                                            //     children: [
+                                            //       BannerAdWidget(), // Display the banner ad
+                                            //     ],
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -457,6 +472,17 @@ class ReceiptsList extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              if (userSubscriptionStatus == '' ||
+                                  userSubscriptionStatus == 'free code access')
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 5.0), // Adjust the value as needed
+                                  child: Column(
+                                    children: [
+                                      BannerAdWidget(), // Display the banner ad
+                                    ],
+                                  ),
+                                )
                             ],
                           ),
                           // Image.network(receipts[index].photo!),

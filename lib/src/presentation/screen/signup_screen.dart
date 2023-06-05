@@ -142,7 +142,6 @@ class SignupScreen extends StatelessWidget {
 
                                       await signupProvider.signupPressed(
                                         context,
-                                        codeHandling.deleteCode(),
                                         oneSessionLogin.loggedIn(),
                                         oneSessionLogin.sendSessionData(
                                             signupProvider.userEmail),

@@ -172,14 +172,13 @@ class SignupProvider extends ChangeNotifier {
   deleteUser() {
     _auth.currentUser?.delete();
   }
-
-  signupPressed(context, deleteCode, loggedIn, sendSessionData) async {
+  signupPressed(context, loggedIn, sendSessionData) async {
     await _signup();
 
     if (_signupError == '' && _isAllFieldsFilled == true) {
       //Navigator.pushNamed(context, '/phoneAuth');
 
-      await deleteCode;
+  //    await deleteCode;
       loggedIn;
       await sendSessionData;
 
@@ -217,4 +216,48 @@ class SignupProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+  // signupPressed(context, deleteCode, loggedIn, sendSessionData) async {
+  //   await _signup();
+
+  //   if (_signupError == '' && _isAllFieldsFilled == true) {
+  //     //Navigator.pushNamed(context, '/phoneAuth');
+
+  //     await deleteCode;
+  //     loggedIn;
+  //     await sendSessionData;
+
+  //     await UploadUserData(
+  //             uid: uid,
+  //             userName: userName,
+  //             userEmail: userEmail,
+  //             userSubscriptionStatus: userSubscriptionStatus,
+  //             subscriptionDate: subscriptionDate!,
+  //             subscriptionEndDate: subscriptionEndDate)
+  //         .createUserDataToFirestore();
+
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: Text(
+  //       "Account has been successfully created",
+  //       style: const TextStyle(
+  //         color: Colors.white,
+  //         fontFamily: "Poppins",
+  //       ),
+  //     )));
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => HomeScreen()),
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: Text(
+  //       _signupError,
+  //       style: const TextStyle(
+  //         color: Colors.white,
+  //         fontFamily: "Poppins",
+  //       ),
+  //     )));
+  //   }
+
+  //   notifyListeners();
+  // }
 }
