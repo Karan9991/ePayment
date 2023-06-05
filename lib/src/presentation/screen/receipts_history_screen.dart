@@ -90,6 +90,8 @@ class ReceiptsHistoryScreen extends StatelessWidget {
           storeUserSubscriptionStatus(userSubscriptionStatus);
 
           print("subscription status $userSubscriptionStatus");
+          print("uuuuuuuuuser data  $userData");
+
           // Check the user subscription status and disable search bar and download button if necessary
           //   bool userSubscriptionStatuss = userSubscriptionStatus != 'free license code';
 

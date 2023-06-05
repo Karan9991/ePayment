@@ -24,6 +24,7 @@ import '../../business_logic/auth/signup_provider.dart';
 import '../../business_logic/recognize_photo_text.dart';
 import '../../business_logic/retrieve_user_data.dart';
 import 'package:e_payment/src/presentation/widget/form_text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditEmailScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -218,10 +219,25 @@ class EditEmailScreen extends StatelessWidget {
             ConfirmActionButton(
               onPressed: () async {
                 String newEmail = emailController.text.trim();
+                final _db = FirebaseFirestore.instance;
+
                 if (newEmail.isNotEmpty) {
                   try {
                     await auth.currentUser!.updateEmail(newEmail);
                     await auth.currentUser!.sendEmailVerification();
+
+                    // final users = _db.collection("users");
+                    // final user = <String, dynamic>{
+                    //   "userEmail": newEmail,
+                    // };
+                    // await users.doc(auth.currentUser!.uid).set(user);
+
+                    final userRef =
+                        _db.collection("users").doc(auth.currentUser!.uid);
+                    await userRef.update({
+                      "userEmail": newEmail,
+                    });
+
                     oneSessionLogin.notLoggedIn();
                     oneSessionLogin.sendSessionData(auth.currentUser!.email);
                     ScaffoldMessenger.of(context).showSnackBar(

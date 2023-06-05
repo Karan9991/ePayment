@@ -11,15 +11,18 @@ class AutoLogoutService {
   var oneSession;
   var signup;
   var signin;
-  var auth= FirebaseAuth.instance;
-AutoLogoutService({ required this.oneSession, required this.signup,
-  required this.signin,
-});
+  var auth = FirebaseAuth.instance;
+  AutoLogoutService({
+    required this.oneSession,
+    required this.signup,
+    required this.signin,
+  });
+
   /// Resets the existing timer and starts a new timer
   startNewTimer() {
     stopTimer();
-    if (auth.currentUser!=null) {
-       _timer = Timer.periodic(const Duration(minutes: autoLogoutTimer), (_) {
+    if (auth.currentUser != null) {
+      _timer = Timer.periodic(const Duration(minutes: autoLogoutTimer), (_) {
         timedOut();
       });
     }
@@ -35,36 +38,29 @@ AutoLogoutService({ required this.oneSession, required this.signup,
   /// Track user activity and reset timer
   void trackUserActivity([_]) async {
     print('User Activity Detected!');
-    if (auth.currentUser!=null && _timer != null) {
-
-       startNewTimer();
+    if (auth.currentUser != null && _timer != null) {
+      startNewTimer();
     }
   }
 
   /// Called if the user is inactive for a period of time and opens a dialog
   Future<void> timedOut() async {
-
     stopTimer();
-    if (auth.currentUser!=null) {
+    if (auth.currentUser != null) {
       SignOut().signOut();
-      NavigateToScreen().navToScreen(GlobalContextService.navigatorKey.currentContext, const SignInScreen());
+      NavigateToScreen().navToScreen(
+          GlobalContextService.navigatorKey.currentContext,
+          const SignInScreen());
 
       oneSession.notLoggedIn();
-     oneSession
-          .sendSessionData(auth.currentUser!.email);
+      oneSession.sendSessionData(auth.currentUser!.email);
       if (signin.userEmail != "") {
         oneSession.notLoggedIn();
-         await oneSession
-            .sendSessionData(signin.userEmail);
-
-
+        await oneSession.sendSessionData(signin.userEmail);
       } else {
         oneSession.notLoggedIn();
-        await oneSession
-            .sendSessionData(signup.userEmail);
-
+        await oneSession.sendSessionData(signup.userEmail);
       }
-
     }
   }
 }
