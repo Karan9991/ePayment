@@ -71,6 +71,8 @@ class ReceiptsHistoryScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     String uid = user?.uid ?? ''; // User ID or an empty string if user is null
     print("user id $uid");
+
+    
     return FutureBuilder<Map<String, dynamic>>(
       future:
           getUserDataFromFirestore(uid), // Pass the user's UID to the function

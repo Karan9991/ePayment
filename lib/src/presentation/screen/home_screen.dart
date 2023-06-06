@@ -23,6 +23,7 @@ import '../../business_logic/recognize_photo_text.dart';
 import '../../business_logic/retrieve_user_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -243,6 +244,8 @@ class HomeScreen extends StatelessWidget {
                           onTap: () async {
                             HapticFeedback.vibrate();
                             SignOut().signOut();
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.remove('subscriptionStatus');
                             NavigateToScreen()
                                 .navToScreen(context, const SignInScreen());
                             oneSessionLogin.notLoggedIn();

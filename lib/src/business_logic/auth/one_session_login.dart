@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+   import 'package:shared_preferences/shared_preferences.dart';
 
 class OneSessionLogin extends ChangeNotifier {
   bool isLoggedIn=false;
@@ -11,6 +12,7 @@ class OneSessionLogin extends ChangeNotifier {
   }
   notLoggedIn(){
     isLoggedIn = false;
+    
     notifyListeners();
   }
 
@@ -20,6 +22,7 @@ class OneSessionLogin extends ChangeNotifier {
       "isLoggedIn": isLoggedIn,
     };
     await usersSessions.doc(email.toLowerCase()).set(session);
+    
   }
 
   getSessionData(email) async {

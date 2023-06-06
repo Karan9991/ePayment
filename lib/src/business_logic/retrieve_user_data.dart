@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:e_payment/src/data/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RetrieveUserDataProvider extends ChangeNotifier {
   String? userName;
@@ -27,6 +28,9 @@ class RetrieveUserDataProvider extends ChangeNotifier {
           subscriptionDate = _userDataProvider.subscriptionDate;
           subscriptionEndDate = _userDataProvider.subscriptionEndDate!;
           userSubscriptionStatus = _userDataProvider.userSubscriptionStatus;
+
+final prefs = await SharedPreferences.getInstance();
+await prefs.setString('subscriptionStatus', userSubscriptionStatus!);
 
           print(
               "RRRRRRRRRRRRRRetrieveUserDataProvider userSubscriptionStatus $userSubscriptionStatus");
