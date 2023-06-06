@@ -30,6 +30,9 @@ class ExistReceiptAlertWidget extends StatelessWidget {
 
     print('tttttttesting 5 Subscription Status: $subscriptionStatus');
 
+    bool isSubscriptionFree = userSubscriptionStatus == '' ||
+        userSubscriptionStatus == 'free code access';
+
     return AlertDialog(
       title: const Text(
         "Receipt already exist! ",
@@ -83,48 +86,49 @@ class ExistReceiptAlertWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    // NavigateToScreen()
-                    //     .navToScreen(context, const PrintExistReceiptScreen());
-                    await GallerySaver.saveImage(
-                        receiptFirestore.existReceiptPhotoFile!.path);
-                    //
-                    //  await SaverGallery.saveFile(file: receiptFirestore.existReceiptPhotoFile!.path,
-                    //      androidExistNotSave: true,
-                    //      name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                      "Receipt Saved Successfully in Gallery !",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Poppins",
-                      ),
-                    )));
-                  },
-                  child: const Icon(
-                    Icons.download_for_offline_outlined,
-                    size: 50,
-                    color: Color.fromRGBO(7, 38, 85, 1),
-                  ),
-                ), //save btn
-                GestureDetector(
-                  onTap: () async {
-                    await ShareReceipt(
-                            file: receiptFirestore.existReceiptPhotoFile!)
-                        .share();
-                  },
-                  child: const Icon(
-                    Icons.share,
-                    size: 50,
-                    color: Color.fromRGBO(7, 38, 85, 1),
-                  ),
-                ), //share btn
-              ],
-            ),
+            if (!isSubscriptionFree)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      // NavigateToScreen()
+                      //     .navToScreen(context, const PrintExistReceiptScreen());
+                      await GallerySaver.saveImage(
+                          receiptFirestore.existReceiptPhotoFile!.path);
+                      //
+                      //  await SaverGallery.saveFile(file: receiptFirestore.existReceiptPhotoFile!.path,
+                      //      androidExistNotSave: true,
+                      //      name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                        "Receipt Saved Successfully in Gallery !",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                        ),
+                      )));
+                    },
+                    child: const Icon(
+                      Icons.download_for_offline_outlined,
+                      size: 50,
+                      color: Color.fromRGBO(7, 38, 85, 1),
+                    ),
+                  ), //save btn
+                  GestureDetector(
+                    onTap: () async {
+                      await ShareReceipt(
+                              file: receiptFirestore.existReceiptPhotoFile!)
+                          .share();
+                    },
+                    child: const Icon(
+                      Icons.share,
+                      size: 50,
+                      color: Color.fromRGBO(7, 38, 85, 1),
+                    ),
+                  ), //share btn
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(

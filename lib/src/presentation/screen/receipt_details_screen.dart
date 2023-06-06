@@ -53,6 +53,8 @@ class ReceiptDetailsScreen extends StatelessWidget {
           final ReceiptFirestore receiptFirestore =
               Provider.of<ReceiptFirestore>(context);
 
+  
+
           return Scaffold(
             appBar: AppBar(
               backgroundColor: const Color.fromRGBO(0, 0, 254, 1),
