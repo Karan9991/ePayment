@@ -12,11 +12,30 @@ import '../../business_logic/image_provider.dart';
 import '../../business_logic/signature_provider.dart';
 import '../../business_logic/upload_receipt_photo.dart';
 import '../../business_logic/retrieve_user_data.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 const TextStyle dataRecognizedStyle = TextStyle(
   color: Color.fromRGBO(7, 38, 85, 1),
   fontFamily: "Poppins",
 );
+InterstitialAd? _interstitialAd;
+
+Future<void> loadInterstitialAd() async {
+  final interstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
+  final adRequest = AdRequest();
+  await InterstitialAd.load(
+    adUnitId: interstitialAdUnitId,
+    request: adRequest,
+    adLoadCallback: InterstitialAdLoadCallback(
+      onAdLoaded: (ad) {
+        _interstitialAd = ad..show();
+      },
+      onAdFailedToLoad: (error) {
+        print('Interstitial ad failed to load: $error');
+      },
+    ),
+  );
+}
 
 class ConfirmingAllDetails extends StatelessWidget {
   const ConfirmingAllDetails({Key? key}) : super(key: key);
@@ -38,16 +57,15 @@ class ConfirmingAllDetails extends StatelessWidget {
         Provider.of<ConfirmationLoadingState>(context);
     final PhotoProvider photoProvider = Provider.of<PhotoProvider>(context);
 
- RetrieveUserDataProvider retrieveUserDataProvider =
+    RetrieveUserDataProvider retrieveUserDataProvider =
         Provider.of<RetrieveUserDataProvider>(context);
     retrieveUserDataProvider.getUserDataFromFirestore();
 
-   final subscriptionStatus =
-              retrieveUserDataProvider.userSubscriptionStatus;
+    final subscriptionStatus = retrieveUserDataProvider.userSubscriptionStatus;
 
-          final userSubscriptionStatus = subscriptionStatus;
+    final userSubscriptionStatus = subscriptionStatus;
 
-          print('ttttttttesting 3 Subscription Status: $subscriptionStatus');
+    print('ttttttttesting 3 Subscription Status: $subscriptionStatus');
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -61,7 +79,7 @@ class ConfirmingAllDetails extends StatelessWidget {
             ),
           ),
         ),
-        body:WillPopScope(
+        body: WillPopScope(
           onWillPop: () async {
             signatureProvider.deleteSignature();
             Navigator.pop(context);
@@ -156,20 +174,19 @@ class ConfirmingAllDetails extends StatelessWidget {
                                         // Image.file(signatureProvider
                                         //     .signatureImageFile!),
                                       ),
-                                      
                                     ],
                                   ),
-                                //        if (userSubscriptionStatus == '' ||
-                                //   userSubscriptionStatus == 'free code access')
-                                // Container(
-                                //   margin: EdgeInsets.only(
-                                //       top: 5.0), // Adjust the value as needed
-                                //   child: Column(
-                                //     children: [
-                                //       BannerAdWidget(), // Display the banner ad
-                                //     ],
-                                //   ),
-                                // )
+                                  //        if (userSubscriptionStatus == '' ||
+                                  //   userSubscriptionStatus == 'free code access')
+                                  // Container(
+                                  //   margin: EdgeInsets.only(
+                                  //       top: 5.0), // Adjust the value as needed
+                                  //   child: Column(
+                                  //     children: [
+                                  //       BannerAdWidget(), // Display the banner ad
+                                  //     ],
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ),
@@ -179,17 +196,17 @@ class ConfirmingAllDetails extends StatelessWidget {
                       const SizedBox(
                         height: 0,
                       ),
-                                if (userSubscriptionStatus == '' ||
-                                  userSubscriptionStatus == 'free code access')
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: 10.0), // Adjust the value as needed
-                                  child: Column(
-                                    children: [
-                                      BannerAdWidget(), // Display the banner ad
-                                    ],
-                                  ),
-                                )
+                      if (userSubscriptionStatus == '' ||
+                          userSubscriptionStatus == 'free code access')
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: 10.0), // Adjust the value as needed
+                          child: Column(
+                            children: [
+                              BannerAdWidget(), // Display the banner ad
+                            ],
+                          ),
+                        )
                     ],
                   ),
                 ),
@@ -198,23 +215,27 @@ class ConfirmingAllDetails extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20),
                 child: GestureDetector(
                   onTap: () async {
+                    await loadInterstitialAd(); // Load the interstitial ad
+
                     HapticFeedback.vibrate();
                     confirmationLoadingState.loading();
                     await uploadReceiptPhoto.uploadFile(photoProvider.photo!);
-                    await originalPhotoUrl
-                        .setOriginalPhotoLink(uploadReceiptPhoto.finalReceiptUrl);
+                    await originalPhotoUrl.setOriginalPhotoLink(
+                        uploadReceiptPhoto.finalReceiptUrl);
 
                     await receiptDetailsToPhoto
                         .captureWidget(recognizeText.refNo);
 
-
                     await uploadReceiptPhoto.uploadFile(
                         receiptDetailsToPhoto.confirmedReceiptPhotoFile!);
                     checkReceiptExistence.createReceiptDataToFirestore(
-                        "${recognizeText.refNo}", uploadReceiptPhoto.finalReceiptUrl,originalPhotoUrl.originalPhotoUrl);
+                        "${recognizeText.refNo}",
+                        uploadReceiptPhoto.finalReceiptUrl,
+                        originalPhotoUrl.originalPhotoUrl);
 
                     if (!context.mounted) return;
                     confirmationLoadingState.notLoading();
+
                     Navigator.popAndPushNamed(context, '/shareAndPrint');
                   },
                   child: Center(
@@ -233,7 +254,6 @@ class ConfirmingAllDetails extends StatelessWidget {
                                   fontFamily: "Poppins",
                                 ),
                               )
-                              
                             ],
                           )
                         : Container(
@@ -280,65 +300,61 @@ class ReceiptWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Container(
-                            height: 450,
-                            width: 300,
-                            decoration: BoxDecoration(
-     color: Colors.white,
-     borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-     crossAxisAlignment: CrossAxisAlignment.start,
-     mainAxisAlignment:
-         MainAxisAlignment.spaceEvenly,
-     children: [
-       Text(
-         "Ref NO. : ${recognizeText.refNo}",
-         style: dataRecognizedStyle,
-       ),
-       Text(
-         "Amount : P ${recognizeText.amount}",
-         style: dataRecognizedStyle,
-       ),
-       Text(
-         "Date : ${recognizeText.dateAndTime}",
-         style: dataRecognizedStyle,
-       ),
-       Text(
-         "Receiving Date : ${recognizeText.dateNow}",
-         style: dataRecognizedStyle,
-       ),
-       Text(
-         "Total Amount: P ${addFee.totalAmount}",
-         style: dataRecognizedStyle,
-       ),
-       Text(
-         "Name: ${recognizeText.receiptName}",
-         style: dataRecognizedStyle,
-       ),
-       Row(
-         children: [
-           const Text("Signature:"),
-           const SizedBox(
-             width: 50,
-           ),
-           SizedBox(
-             height: 80,
-             width: 80,
-             child: Image.memory(
-                 signatureProvider.signature!),
-             // Image.file(signatureProvider
-             //     .signatureImageFile!),
-           ),
-       
-         ],
-       ),
-     ],
-                              ),
-                            ),
-                          ), //final receipt
-                        );
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Container(
+        height: 450,
+        width: 300,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                "Ref NO. : ${recognizeText.refNo}",
+                style: dataRecognizedStyle,
+              ),
+              Text(
+                "Amount : P ${recognizeText.amount}",
+                style: dataRecognizedStyle,
+              ),
+              Text(
+                "Date : ${recognizeText.dateAndTime}",
+                style: dataRecognizedStyle,
+              ),
+              Text(
+                "Receiving Date : ${recognizeText.dateNow}",
+                style: dataRecognizedStyle,
+              ),
+              Text(
+                "Total Amount: P ${addFee.totalAmount}",
+                style: dataRecognizedStyle,
+              ),
+              Text(
+                "Name: ${recognizeText.receiptName}",
+                style: dataRecognizedStyle,
+              ),
+              Row(
+                children: [
+                  const Text("Signature:"),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  SizedBox(
+                    height: 80,
+                    width: 80,
+                    child: Image.memory(signatureProvider.signature!),
+                    // Image.file(signatureProvider
+                    //     .signatureImageFile!),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ), //final receipt
+    );
   }
 }

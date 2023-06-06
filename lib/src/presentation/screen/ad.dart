@@ -1,12 +1,12 @@
-// import 'package:flutter/material.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // class InterstitialAdManager {
 //   InterstitialAd? _interstitialAd;
 
 //   void loadInterstitialAd() {
 //     InterstitialAd.load(
-//       adUnitId: 'ca-app-pub-4228375379782984/8399226313',
+//       adUnitId: 'ca-app-pub-3940256099942544/1033173712',
 //       request: AdRequest(),
 //       adLoadCallback: InterstitialAdLoadCallback(
 //         onAdLoaded: (ad) {
@@ -61,14 +61,14 @@
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class InterstitialAdManager {
   InterstitialAd? _interstitialAd;
 
   void loadInterstitialAd() {
-  
+
     InterstitialAd.load(
       adUnitId: 'ca-app-pub-3940256099942544/1033173712',
       request: AdRequest(),
@@ -140,3 +140,95 @@ class _MyAdState extends State<MyAd> {
     );
   }
 }
+// class AdManager {
+//   InterstitialAd? _interstitialAd;
+//   bool _isInterstitialAdReady = false;
+
+//   void loadInterstitialAd() {
+//     InterstitialAd.load(
+//       adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+//       request: AdRequest(),
+//       adLoadCallback: InterstitialAdLoadCallback(
+//         onAdLoaded: (ad) {
+//           _interstitialAd = ad;
+//           _isInterstitialAdReady = true;
+//         },
+//         onAdFailedToLoad: (error) {
+//           print('InterstitialAd failed to load: $error');
+//           _isInterstitialAdReady = false;
+//         },
+//       ),
+//     );
+//   }
+
+//   void showInterstitialAd({VoidCallback? onAdClosed}) {
+//     // Show the interstitial ad
+//     if (_isInterstitialAdReady) {
+//       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+//         onAdDismissedFullScreenContent: (ad) {
+//           _isInterstitialAdReady = false;
+//           loadInterstitialAd();
+//         },
+//         onAdFailedToShowFullScreenContent: (ad, error) {
+//           print('InterstitialAd failed to show: $error');
+//           _isInterstitialAdReady = false;
+//           loadInterstitialAd();
+//         },
+//       );
+//       _interstitialAd!.show();
+//     } else {
+//       print('InterstitialAd not ready.');
+//     }
+//     // Call the onAdClosed callback when the ad is closed
+//     if (onAdClosed != null) {
+//       onAdClosed();
+//     }
+//   }
+  //   Future<void> showInterstitialAd() async {
+  //   // Show the interstitial ad and wait for it to complete
+  //   // You can use the ad plugin or package specific to your ad provider
+  //   // and implement the logic to show the interstitial ad here.
+  //   // Once the ad is complete, resolve the Future.
+  //      if (_isInterstitialAdReady) {
+  //     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+  //       onAdDismissedFullScreenContent: (ad) {
+  //         _isInterstitialAdReady = false;
+  //         loadInterstitialAd();
+  //       },
+  //       onAdFailedToShowFullScreenContent: (ad, error) {
+  //         print('InterstitialAd failed to show: $error');
+  //         _isInterstitialAdReady = false;
+  //         loadInterstitialAd();
+  //       },
+  //     );
+  //     _interstitialAd!.show();
+  //   } else {
+  //     print('InterstitialAd not ready.');
+  //   }
+  //   await Future.delayed(Duration(seconds: 3)); // Simulating ad completion delay
+  //   // Complete the Future when the ad is finished
+  //   return;
+  // }
+
+  // void showInterstitialAd() {
+  //   if (_isInterstitialAdReady) {
+  //     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+  //       onAdDismissedFullScreenContent: (ad) {
+  //         _isInterstitialAdReady = false;
+  //         loadInterstitialAd();
+  //       },
+  //       onAdFailedToShowFullScreenContent: (ad, error) {
+  //         print('InterstitialAd failed to show: $error');
+  //         _isInterstitialAdReady = false;
+  //         loadInterstitialAd();
+  //       },
+  //     );
+  //     _interstitialAd!.show();
+  //   } else {
+  //     print('InterstitialAd not ready.');
+  //   }
+  // }
+//}
+
+
+//working

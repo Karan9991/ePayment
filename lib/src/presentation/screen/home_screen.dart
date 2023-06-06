@@ -125,9 +125,14 @@ class HomeScreen extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             HapticFeedback.vibrate();
-
-                            RequestCode().launchInBrowser(
-                                Uri.parse("http://m.me/enegosyoofficial"));
+   Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyAd(),
+              ),
+            );
+                            // RequestCode().launchInBrowser(
+                            //     Uri.parse("http://m.me/enegosyoofficial"));
                           },
                           child: const Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
