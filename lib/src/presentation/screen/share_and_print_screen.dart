@@ -39,7 +39,8 @@ class ShareAndPrintScreen extends StatelessWidget {
     final subscriptionStatus = retrieveUserDataProvider.userSubscriptionStatus;
 
     final userSubscriptionStatus = subscriptionStatus;
-
+    bool isSubscriptionFree = userSubscriptionStatus == '' ||
+        userSubscriptionStatus == 'free code access';
     print('tttttttesting 4 Subscription Status: $subscriptionStatus');
 
     return WillPopScope(
@@ -75,62 +76,63 @@ class ShareAndPrintScreen extends StatelessWidget {
                       )
                     : Image.file(
                         receiptDetailsToPhoto.confirmedReceiptPhotoFile!),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          HapticFeedback.vibrate();
+                if (!isSubscriptionFree)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            HapticFeedback.vibrate();
 
-                          // NavigateToScreen()
-                          //     .navToScreen(context, const PrintScreen());
-                          await GallerySaver.saveImage(
-                              switchReceiptPhoto.isOriginal
-                                  ? photoProvider.photo!.path
-                                  : receiptDetailsToPhoto
-                                      .confirmedReceiptPhotoFile!.path);
-                          // await SaverGallery.saveFile(file: switchReceiptPhoto.isOriginal
-                          //     ?photoProvider.photo!.path:receiptDetailsToPhoto.confirmedReceiptPhotoFile!.path,
-                          //     androidExistNotSave: true, name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
+                            // NavigateToScreen()
+                            //     .navToScreen(context, const PrintScreen());
+                            await GallerySaver.saveImage(
+                                switchReceiptPhoto.isOriginal
+                                    ? photoProvider.photo!.path
+                                    : receiptDetailsToPhoto
+                                        .confirmedReceiptPhotoFile!.path);
+                            // await SaverGallery.saveFile(file: switchReceiptPhoto.isOriginal
+                            //     ?photoProvider.photo!.path:receiptDetailsToPhoto.confirmedReceiptPhotoFile!.path,
+                            //     androidExistNotSave: true, name: 'receipt${DateTime.now()}.jpg',androidRelativePath: "Photos");
 
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                                  content: Text(
-                            "Receipt Saved Successfully in Gallery !",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                            ),
-                          )));
-                        },
-                        child: const Icon(
-                          Icons.download_for_offline_outlined,
-                          size: 50,
-                          color: Color.fromRGBO(7, 38, 85, 1),
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                    content: Text(
+                              "Receipt Saved Successfully in Gallery !",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                              ),
+                            )));
+                          },
+                          child: const Icon(
+                            Icons.download_for_offline_outlined,
+                            size: 50,
+                            color: Color.fromRGBO(7, 38, 85, 1),
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          HapticFeedback.vibrate();
+                        GestureDetector(
+                          onTap: () async {
+                            HapticFeedback.vibrate();
 
-                          await ShareReceipt(
-                                  file: switchReceiptPhoto.isOriginal
-                                      ? photoProvider.photo!
-                                      : receiptDetailsToPhoto
-                                          .confirmedReceiptPhotoFile!)
-                              .share();
-                        },
-                        child: const Icon(
-                          Icons.share,
-                          size: 50,
-                          color: Color.fromRGBO(7, 38, 85, 1),
+                            await ShareReceipt(
+                                    file: switchReceiptPhoto.isOriginal
+                                        ? photoProvider.photo!
+                                        : receiptDetailsToPhoto
+                                            .confirmedReceiptPhotoFile!)
+                                .share();
+                          },
+                          child: const Icon(
+                            Icons.share,
+                            size: 50,
+                            color: Color.fromRGBO(7, 38, 85, 1),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {

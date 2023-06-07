@@ -125,12 +125,12 @@ class HomeScreen extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             HapticFeedback.vibrate();
-   Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyAd(),
-              ),
-            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyAd(),
+                              ),
+                            );
                             // RequestCode().launchInBrowser(
                             //     Uri.parse("http://m.me/enegosyoofficial"));
                           },
@@ -205,6 +205,31 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+//                  Padding(
+//   padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+//   child: retrieveUserDataProvider.subscriptionEndDate.isAfter(DateTime(2100 - 01 - 1))
+//     ? const Text(
+//         "End date: Life time",
+//         style: TextStyle(
+//           fontFamily: "Poppins",
+//           fontWeight: FontWeight.bold,
+//           fontSize: 12,
+//           color: Colors.white,
+//         ),
+//       )
+//     : Text(
+//         userSubscriptionStatus == '' || userSubscriptionStatus == 'free code access'
+//           ? "End date: 3 Months"
+//           : "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}",
+//         style: const TextStyle(
+//           fontFamily: "Poppins",
+//           fontWeight: FontWeight.bold,
+//           fontSize: 12,
+//           color: Colors.white,
+//         ),
+//       ),
+// ),
+
 
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 1, 0, 10),
@@ -222,18 +247,16 @@ class HomeScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
                                     8.0, 40, 0.8, 0.8),
-                                child: retrieveUserDataProvider
-                                        .subscriptionEndDate
-                                        .isAfter(DateTime(2100 - 01 - 1))
-                                    ? const Text("End date:   Life time ",
+                                child:   userSubscriptionStatus == '' || userSubscriptionStatus == 'free code access'
+                                    ? const Text("End date:    3 Months ",
                                         style: TextStyle(
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                           color: Colors.white,
                                         ))
-                                    : Text(
-                                        "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}",
+                                    : Text(retrieveUserDataProvider.subscriptionEndDate.isAfter(DateTime(2100 - 01 - 1)) ? "End date:    Life Time " :
+                                        "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}" ,
                                         style: const TextStyle(
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.bold,
