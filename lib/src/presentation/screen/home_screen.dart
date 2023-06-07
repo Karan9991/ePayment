@@ -1,5 +1,6 @@
 import 'package:e_payment/src/presentation/screen/ad.dart';
 import 'package:e_payment/src/presentation/screen/banner_ad.dart';
+import 'package:e_payment/src/presentation/screen/drawerbannerad.dart';
 import 'package:e_payment/src/presentation/screen/edit_email_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -125,14 +126,14 @@ class HomeScreen extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             HapticFeedback.vibrate();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyAd(),
-                              ),
-                            );
-                            // RequestCode().launchInBrowser(
-                            //     Uri.parse("http://m.me/enegosyoofficial"));
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => MyAd(),
+                            //   ),
+                            // );
+                            RequestCode().launchInBrowser(
+                                Uri.parse("http://m.me/enegosyoofficial"));
                           },
                           child: const Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -205,31 +206,6 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-//                  Padding(
-//   padding: const EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-//   child: retrieveUserDataProvider.subscriptionEndDate.isAfter(DateTime(2100 - 01 - 1))
-//     ? const Text(
-//         "End date: Life time",
-//         style: TextStyle(
-//           fontFamily: "Poppins",
-//           fontWeight: FontWeight.bold,
-//           fontSize: 12,
-//           color: Colors.white,
-//         ),
-//       )
-//     : Text(
-//         userSubscriptionStatus == '' || userSubscriptionStatus == 'free code access'
-//           ? "End date: 3 Months"
-//           : "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}",
-//         style: const TextStyle(
-//           fontFamily: "Poppins",
-//           fontWeight: FontWeight.bold,
-//           fontSize: 12,
-//           color: Colors.white,
-//         ),
-//       ),
-// ),
-
 
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 1, 0, 10),
@@ -267,7 +243,7 @@ class HomeScreen extends StatelessWidget {
                             ]),
                       ), //end date
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
                         child: GestureDetector(
                           onTap: () async {
                             HapticFeedback.vibrate();
@@ -312,39 +288,84 @@ class HomeScreen extends StatelessWidget {
                               ]),
                         ),
                       ), //sign out
-                      Expanded(
+                        Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                         child: GestureDetector(
                           onTap: () {
-                            // Handle the "Don't want any ads? Upgrade" action here
                             HapticFeedback.vibrate();
-
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => MyAd(),
+                            //   ),
+                            // );
                             RequestCode().launchInBrowser(Uri.parse(
                                 "https://www.facebook.com/eNegosyoOfficial"));
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Row(
+                          child: const Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Icon(
-                                  Icons.verified_user_rounded,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  "Don't want ads? Upgrade",
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                Padding(
+                                  padding:
+                                      EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                                  child: Icon(
+                                    Icons.verified_user_rounded,
+                                    size: 20,
                                     color: Colors.white,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
+                                  child: Text(  "Don't want ads? Upgrade",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              ]),
                         ),
-                      ),
+                      ), 
+                         const SizedBox(height: 10),
+      const Text(
+        "Benefits of Upgraded",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.white,
+        ),
+      ),
+      const SizedBox(height: 5),
+      Padding(
+  padding: EdgeInsets.symmetric(horizontal: 16),
+  child: const Text(
+    "* No ads\n"
+    "* Can share or download history to your phone or send email\n"
+    "* Search option for reference number\n"
+    "* Custom date range for transaction history\n"
+    "* More updates coming soon (loading, rewards, mini mart, healthcare services, and many more)",
+    style: TextStyle(
+      fontFamily: "Poppins",
+      fontSize: 12,
+      color: Colors.white,
+    ),
+  ),
+),
+ if (userSubscriptionStatus == '' ||
+    userSubscriptionStatus == 'free code access')
+  Container(
+                                  margin: EdgeInsets.only(
+                                      top: 10.0), // Adjust the value as needed
+                                  child: Column(
+                                    children: [
+                                      BannerAdWidget(), // Display the banner ad
+                                    ],
+                                  ),
+                                ),
+
                     ],
                   ),
                 ),
