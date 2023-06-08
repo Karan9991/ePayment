@@ -215,6 +215,8 @@ class ConfirmingAllDetails extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20),
                 child: GestureDetector(
                   onTap: () async {
+                    if (userSubscriptionStatus == '' ||
+                          userSubscriptionStatus == 'free code access')
                     await loadInterstitialAd(); // Load the interstitial ad
 
                     HapticFeedback.vibrate();

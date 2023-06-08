@@ -38,20 +38,33 @@ class RenewSubscription extends ChangeNotifier {
     newSubscriptionDate = dateNow;
     if (userSubscriptionStatus != "life time access" &&
         userSubscriptionStatus != "one month access" &&
-        userSubscriptionStatus != "one week access") {
+        userSubscriptionStatus != "one week access" &&
+        userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year + 1,
           newSubscriptionDate!.month, newSubscriptionDate!.day);
     } else if (userSubscriptionStatus != "life time access" &&
         userSubscriptionStatus != "one year access" &&
         userSubscriptionStatus != "one week access" &&
-        userSubscriptionStatus == "one month access") {
+        userSubscriptionStatus == "one month access" &&
+        userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year,
           newSubscriptionDate!.month + 1, newSubscriptionDate!.day);
+    } else if (userSubscriptionStatus != "life time access" &&
+        userSubscriptionStatus != "one year access" &&
+        userSubscriptionStatus != "one week access" &&
+        userSubscriptionStatus != "one month access" &&
+        userSubscriptionStatus == "free code access" || userSubscriptionStatus == "") {
+      newSubscriptionEndDate = DateTime(newSubscriptionDate!.year,
+          newSubscriptionDate!.month + 3, newSubscriptionDate!.day);
     }
     if (userSubscriptionStatus != "life time access" &&
         userSubscriptionStatus != "one year access" &&
         userSubscriptionStatus == "one week access" &&
-        userSubscriptionStatus != "one month access") {
+        userSubscriptionStatus != "one month access" &&
+        userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
       newSubscriptionEndDate = DateTime(newSubscriptionDate!.year,
           newSubscriptionDate!.month, newSubscriptionDate!.day + 7);
     } else {
@@ -61,6 +74,7 @@ class RenewSubscription extends ChangeNotifier {
 
     notifyListeners();
   }
+
 
   _getSubscriptionCodeStatus(code) {
     if (lifeTimeCodeList.contains(code)) {

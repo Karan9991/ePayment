@@ -17,7 +17,7 @@ class RetrieveUserDataProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   getUserDataFromFirestore() async {
-    if (_auth.currentUser?.email != "admin@admin.com") {
+    if (_auth.currentUser?.email != "epaymenttracker@gmail.com") {
       final docRef = _db.collection("users").doc(_auth.currentUser!.uid);
       await docRef.get().then(
         (DocumentSnapshot doc) async {

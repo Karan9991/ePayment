@@ -32,20 +32,35 @@ class SignupProvider extends ChangeNotifier {
       subscriptionDate = dateNow;
       if (userSubscriptionStatus != "life time access" &&
           userSubscriptionStatus != "one month access" &&
-          userSubscriptionStatus != "one week access") {
+          userSubscriptionStatus != "one week access" &&
+          userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
         subscriptionEndDate = DateTime(subscriptionDate!.year + 1,
             subscriptionDate!.month, subscriptionDate!.day);
       } else if (userSubscriptionStatus != "life time access" &&
           userSubscriptionStatus != "one year access" &&
           userSubscriptionStatus != "one week access" &&
-          userSubscriptionStatus == "one month access") {
+          userSubscriptionStatus == "one month access" &&
+          userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
         subscriptionEndDate = DateTime(subscriptionDate!.year,
             subscriptionDate!.month + 1, subscriptionDate!.day);
-      }
-      if (userSubscriptionStatus != "life time access" &&
+      } else if (userSubscriptionStatus != "life time access" &&
+          userSubscriptionStatus != "one year access" &&
+          userSubscriptionStatus != "one week access" &&
+          userSubscriptionStatus != "one month access" &&
+          userSubscriptionStatus == "free code access" || userSubscriptionStatus == "") {
+        
+          subscriptionEndDate = DateTime(subscriptionDate!.year,
+              subscriptionDate!.month + 3, subscriptionDate!.day);
+          print('eeeeeeeeeeeeend date $subscriptionEndDate');
+        
+      } else if (userSubscriptionStatus != "life time access" &&
           userSubscriptionStatus != "one year access" &&
           userSubscriptionStatus == "one week access" &&
-          userSubscriptionStatus != "one month access") {
+          userSubscriptionStatus != "one month access" &&
+          userSubscriptionStatus != "free code access" &&
+          userSubscriptionStatus != "") {
         subscriptionEndDate = DateTime(subscriptionDate!.year,
             subscriptionDate!.month, subscriptionDate!.day + 7);
       } else {
@@ -172,13 +187,14 @@ class SignupProvider extends ChangeNotifier {
   deleteUser() {
     _auth.currentUser?.delete();
   }
+
   signupPressed(context, loggedIn, sendSessionData) async {
     await _signup();
 
     if (_signupError == '' && _isAllFieldsFilled == true) {
       //Navigator.pushNamed(context, '/phoneAuth');
 
-  //    await deleteCode;
+      //    await deleteCode;
       loggedIn;
       await sendSessionData;
 
@@ -190,6 +206,8 @@ class SignupProvider extends ChangeNotifier {
               subscriptionDate: subscriptionDate!,
               subscriptionEndDate: subscriptionEndDate)
           .createUserDataToFirestore();
+
+      print('eeeeeeeeeeeeend date 2 $subscriptionEndDate');
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(

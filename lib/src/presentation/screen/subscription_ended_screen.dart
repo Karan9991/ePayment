@@ -67,7 +67,7 @@ class SubscriptionEndedScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 40),
           child: RequestCodeWidget(
             onTap: () {
-              RequestCode().launchInBrowser(Uri.parse( "https://www.facebook.com/eNegosyoOfficial"));
+              RequestCode().launchInBrowser(Uri.parse( "https://www.facebook.com/epaymenttracker"));
 
             },
           ),

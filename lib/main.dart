@@ -1,4 +1,3 @@
-
 import 'package:e_payment/src/business_logic/auth/user_activity_detector.dart';
 import 'package:e_payment/src/business_logic/global_context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
-  WidgetsBinding widgetsBinding =WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   MobileAds.instance.initialize();
   await Firebase.initializeApp(
@@ -30,12 +29,13 @@ void main() async {
       child: UserActivityDetector(
         child: MaterialApp(
           navigatorKey: GlobalContextService.navigatorKey,
-          debugShowCheckedModeBanner: true,
-            theme: ThemeData.light(),
-            home:  FirebaseAuth.instance.currentUser == null ? const SignInScreen(): const HomeScreen(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),
+          home: FirebaseAuth.instance.currentUser == null
+              ? const SignInScreen()
+              : const HomeScreen(),
           routes: {
-
-            '/phoneAuth': (context) =>  PhoneAuthScreen(),
+            '/phoneAuth': (context) => PhoneAuthScreen(),
             '/shareAndPrint': (context) => const ShareAndPrintScreen(),
           },
         ),
