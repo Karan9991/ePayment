@@ -1,6 +1,6 @@
 # e-Payment App
 
-The e-Payment App is a mobile application designed to facilitate electronic payment processing and receipt management. It provides a user-friendly interface for capturing receipt images, extracting relevant information from the receipts, and managing payment details. The app integrates with Firebase services, enabling secure storage of receipt data and seamless retrieval across devices. Admin end can add some kind of license access codes to give certain app access to users.
+The e-Payment Flutter App is a mobile application[Android, iOS] designed to facilitate electronic payment processing and receipt management. It provides a user-friendly interface for capturing receipt images, extracting relevant information from the receipts, and managing payment details. The app integrates with Firebase services, enabling secure storage of receipt data and seamless retrieval across devices. Admin end can add some kind of license access codes to give certain app access to users.
 
 ## Features
 - Capture receipt images and extract relevant information using OCR (Optical Character Recognition) technology.
