@@ -21,7 +21,7 @@ const TextStyle dataRecognizedStyle = TextStyle(
 InterstitialAd? _interstitialAd;
 
 Future<void> loadInterstitialAd() async {
-  final interstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
+  final interstitialAdUnitId = 'ca-app-pub-9052462815392719/3848272055';
   final adRequest = AdRequest();
   await InterstitialAd.load(
     adUnitId: interstitialAdUnitId,

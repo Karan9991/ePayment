@@ -47,6 +47,7 @@ class HomeScreen extends StatelessWidget {
 
     User? user = FirebaseAuth.instance.currentUser;
     String uid = user?.uid ?? ''; // User ID or an empty string if user is null
+    
     print("user id $uid");
 
     return FutureBuilder<DocumentSnapshot>(
@@ -133,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                             //   ),
                             // );
                             RequestCode().launchInBrowser(
-                                Uri.parse("http://m.me/enegosyoofficial"));
+                                Uri.parse("http://m.me/epaymenttracker"));
                           },
                           child: const Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -223,7 +224,9 @@ class HomeScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(
                                     8.0, 40, 0.8, 0.8),
-                                child:   userSubscriptionStatus == '' || userSubscriptionStatus == 'free code access'
+                                child: userSubscriptionStatus == '' ||
+                                        userSubscriptionStatus ==
+                                            'free code access'
                                     ? const Text("End date:    3 Months ",
                                         style: TextStyle(
                                           fontFamily: "Poppins",
@@ -231,8 +234,13 @@ class HomeScreen extends StatelessWidget {
                                           fontSize: 12,
                                           color: Colors.white,
                                         ))
-                                    : Text(retrieveUserDataProvider.subscriptionEndDate.isAfter(DateTime(2100 - 01 - 1)) ? "End date:    Life Time " :
-                                        "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}" ,
+                                    : Text(
+                                        retrieveUserDataProvider
+                                                .subscriptionEndDate
+                                                .isAfter(
+                                                    DateTime(2100 - 01 - 1))
+                                            ? "End date:    Life Time "
+                                            : "End date: ${retrieveUserDataProvider.formattedSubscriptionEndDate}",
                                         style: const TextStyle(
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.bold,
@@ -288,7 +296,7 @@ class HomeScreen extends StatelessWidget {
                               ]),
                         ),
                       ), //sign out
-                        Padding(
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                         child: GestureDetector(
                           onTap: () {
@@ -300,7 +308,7 @@ class HomeScreen extends StatelessWidget {
                             //   ),
                             // );
                             RequestCode().launchInBrowser(Uri.parse(
-                                "https://www.facebook.com/eNegosyoOfficial"));
+                                "https://www.facebook.com/epaymenttracker"));
                           },
                           child: const Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -317,7 +325,7 @@ class HomeScreen extends StatelessWidget {
                                 Padding(
                                   padding:
                                       EdgeInsets.fromLTRB(8.0, 40, 0.8, 0.8),
-                                  child: Text(  "Don't want ads? Upgrade",
+                                  child: Text("Don't want ads? Upgrade",
                                       style: TextStyle(
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.bold,
@@ -327,45 +335,44 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ]),
                         ),
-                      ), 
-                         const SizedBox(height: 10),
-      const Text(
-        "Benefits of Upgraded",
-        style: TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: Colors.white,
-        ),
-      ),
-      const SizedBox(height: 5),
-      Padding(
-  padding: EdgeInsets.symmetric(horizontal: 16),
-  child: const Text(
-    "* No ads\n"
-    "* Can share or download history to your phone or send email\n"
-    "* Search option for reference number\n"
-    "* Custom date range for transaction history\n"
-    "* More updates coming soon (loading, rewards, mini mart, healthcare services, and many more)",
-    style: TextStyle(
-      fontFamily: "Poppins",
-      fontSize: 12,
-      color: Colors.white,
-    ),
-  ),
-),
- if (userSubscriptionStatus == '' ||
-    userSubscriptionStatus == 'free code access')
-  Container(
-                                  margin: EdgeInsets.only(
-                                      top: 10.0), // Adjust the value as needed
-                                  child: Column(
-                                    children: [
-                                      BannerAdWidget(), // Display the banner ad
-                                    ],
-                                  ),
-                                ),
-
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Benefits of Upgraded",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: const Text(
+                          "* No ads\n"
+                          "* Can share or download history to your phone or send email\n"
+                          "* Search option for reference number\n"
+                          "* Custom date range for transaction history\n"
+                          "* More updates coming soon (loading, rewards, mini mart, healthcare services, and many more)",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      if (userSubscriptionStatus == '' ||
+                          userSubscriptionStatus == 'free code access')
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: 10.0), // Adjust the value as needed
+                          child: Column(
+                            children: [
+                              BannerAdWidget(), // Display the banner ad
+                            ],
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -378,7 +385,8 @@ class HomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: ChangeNotifierProvider(
                     create: (_) => PhotoProvider(),
-                    child: auth.currentUser?.email == "admin@admin.com"
+                    child: auth.currentUser?.email ==
+                            "epaymenttracker@gmail.com"
                         ? Padding(
                             padding: const EdgeInsets.only(top: 200),
                             child: Column(

@@ -19,7 +19,7 @@ class _BannerAdDWidgetState extends State<BannerAdDWidget> {
   Future<void> _loadBannerAd() async {
     final adSize = AdSize.mediumRectangle;
     final adUnitId =
-        'ca-app-pub-3940256099942544/6300978111'; // Replace with your Ad Unit ID
+        'ca-app-pub-9052462815392719/5572417269'; // Replace with your Ad Unit ID
 
     final adRequest = AdRequest();
     _bannerAd = BannerAd(
